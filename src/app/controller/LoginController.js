@@ -11,7 +11,7 @@ class LoginController {
 
             // Basic input validation to ensure both fields are provided
             if (!username || !password) {
-                return res.status(400).send('Username and password are required'); // Return 400 if inputs are missing
+                return res.status(400).json({ error: 'Username and password are required' });
             }
 
             // Check if the user exists in the database with the provided credentials
@@ -27,16 +27,19 @@ class LoginController {
                 };
                 console.log('User logged in:', req.session.user); // Log the session data for debugging
 
-                // Redirect based on user role: Admins go to '/me', regular users go to '/user'
-                return res.redirect(user.isAdmin ? '/me' : '/user');
+                // Return JSON response with redirect URL
+                return res.json({
+                    success: true,
+                    redirectUrl: user.isAdmin ? '/me' : '/user'
+                });
             } else {
                 // If credentials are invalid, return a 401 Unauthorized response
-                return res.status(401).send('Invalid username or password!');
+                return res.status(401).json({ error: 'Invalid username or password' });
             }
         } catch (error) {
             // Log any errors and return a 500 Internal Server Error response
             console.error('Login error:', error);
-            return res.status(500).send('Internal server error');
+            return res.status(500).json({ error: 'Internal server error' });
         }
     }
 

@@ -47,9 +47,12 @@
     
         <h2>Sign in</h2>
     
-        <form class="login-form" action="/login" method="POST"  autocomplete="off">
-          <input type="text" placeholder="username" name="username"  required>
-          <input type="password" placeholder="password" name="password"  required>
+        <form class="login-form" id="loginForm" autocomplete="off">
+          <input type="text" placeholder="username" name="username" required>
+          <input type="password" placeholder="password" name="password" required>
+          <div id="login-error" class="error-message" style="display: none; color: red; text-align: center; margin-bottom: 15px;">
+            Invalid username or password
+          </div>
       
           <button type="submit">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

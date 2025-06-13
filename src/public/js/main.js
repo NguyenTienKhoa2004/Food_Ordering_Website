@@ -95,54 +95,60 @@ document.addEventListener('DOMContentLoaded', function() {
             // Simple content switch example
             if (questionText.includes('payment methods')) {
                 faqAnswer.innerHTML = `
-                    <div class="faq-card">
-                        <img src="/img/icons/credit-card.svg" alt="Credit Card" />
-                        <h3>Credit & Debit Cards</h3>
-                        <p>We accept all major credit and debit cards for payment</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/digital-wallet.svg" alt="Digital Wallet" />
-                        <h3>Digital Wallets</h3>
-                        <p>Pay easily with Apple Pay, Google Pay, and other digital wallets</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/cash.svg" alt="Cash" />
-                        <h3>Cash on Delivery</h3>
-                        <p>Pay with cash when your order arrives at your doorstep</p>
+                    <div class="faq-cards-row">
+                        <div class="faq-card">
+                            <img src="/img/icons/credit-card.svg" alt="Credit Card" />
+                            <h3>Credit & Debit Cards</h3>
+                            <p>We accept all major credit and debit cards for payment</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/digital-wallet.svg" alt="Digital Wallet" />
+                            <h3>Digital Wallets</h3>
+                            <p>Pay easily with Apple Pay, Google Pay, and other digital wallets</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/cash.svg" alt="Cash" />
+                            <h3>Cash on Delivery</h3>
+                            <p>Pay with cash when your order arrives at your doorstep</p>
+                        </div>
                     </div>`;
             } else if (questionText.includes('track my order')) {
                 faqAnswer.innerHTML = `
-                    <div class="faq-card">
-                        <img src="/img/icons/track.svg" alt="Track Order" />
-                        <h3>Real-time Tracking</h3>
-                        <p>Watch your order's journey from restaurant to your doorstep in real-time</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/app.svg" alt="Mobile App" />
-                        <h3>Mobile App</h3>
-                        <p>Get push notifications about your order status on our mobile app</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/support.svg" alt="Support" />
-                        <h3>Customer Support</h3>
-                        <p>Contact our support team anytime for updates on your order</p>
+                    <div class="faq-cards-row">
+                        <div class="faq-card">
+                            <img src="/img/icons/track.svg" alt="Track Order" />
+                            <h3>Real-time Tracking</h3>
+                            <p>Watch your order's journey from restaurant to your doorstep in real-time</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/app.svg" alt="Mobile App" />
+                            <h3>Mobile App</h3>
+                            <p>Get push notifications about your order status on our mobile app</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/support.svg" alt="Support" />
+                            <h3>Customer Support</h3>
+                            <p>Contact our support team anytime for updates on your order</p>
+                        </div>
                     </div>`;
             } else if (questionText.includes('discounts')) {
                 faqAnswer.innerHTML = `
-                    <div class="faq-card">
-                        <img src="/img/icons/promotion.svg" alt="Promotions" />
-                        <h3>Special Promotions</h3>
-                        <p>Regular discounts and promotional offers throughout the year</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/loyalty.svg" alt="Loyalty Program" />
-                        <h3>Loyalty Program</h3>
-                        <p>Earn points with every order and redeem them for discounts</p>
-                    </div>
-                    <div class="faq-card">
-                        <img src="/img/icons/referral.svg" alt="Referral" />
-                        <h3>Referral Program</h3>
-                        <p>Get discounts by referring friends and family to Foodzie</p>
+                    <div class="faq-cards-row">
+                        <div class="faq-card">
+                            <img src="/img/icons/promotion.svg" alt="Promotions" />
+                            <h3>Special Promotions</h3>
+                            <p>Regular discounts and promotional offers throughout the year</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/loyalty.svg" alt="Loyalty Program" />
+                            <h3>Loyalty Program</h3>
+                            <p>Earn points with every order and redeem them for discounts</p>
+                        </div>
+                        <div class="faq-card">
+                            <img src="/img/icons/referral.svg" alt="Referral" />
+                            <h3>Referral Program</h3>
+                            <p>Get discounts by referring friends and family to Foodzie</p>
+                        </div>
                     </div>`;
             }
         });
@@ -378,18 +384,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Handle form submissions (prevent default behavior)
-    // const forms = document.querySelectorAll('.login-form');
-    // forms.forEach(form => {
-    //     form.addEventListener('submit', function(e) {
-    //         e.preventDefault();
-    //         // Show an alert
-    //         const isLogin = form.closest('#loginModal') !== null;
-    //         alert(isLogin ? 'Login submitted' : 'Signup submitted');
-    //         // Close the modal after submission
-    //         isLogin ? closeLoginModal() : closeSignupModal();
-    //     });
-    // });
+    // Handle login form submission
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('login-error');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+
+            const formData = new FormData(loginForm);
+            const data = {
+                username: formData.get('username'),
+                password: formData.get('password')
+            };
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // If login is successful, redirect to the appropriate page
+                    const result = await response.json();
+                    window.location.href = result.redirectUrl;
+                } else {
+                    // If login fails, show error message
+                    const errorDiv = document.getElementById('login-error');
+                    if (errorDiv) {
+                        errorDiv.style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorDiv = document.getElementById('login-error');
+                if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                }
+            }
+        });
+    }
+
+    // Check for error message in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    if (error) {
+        const errorDiv = document.getElementById('login-error');
+        if (errorDiv) {
+            errorDiv.style.display = 'block';
+        }
+    }
     
     // Close modals when pressing ESC key
     document.addEventListener('keydown', function(e) {
