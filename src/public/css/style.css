@@ -385,13 +385,14 @@ a {
 
 .hero-food-img {
  
-  height: 700px;
-  width: 700px;
+  height: 800px;
+  width: 800px;
   border-radius: 0;
   object-fit: contain;
   
   
-  padding-right: 80px;
+  padding-right: 90px;
+  margin-right: -60px;
 }
 
 /* Notifications */
