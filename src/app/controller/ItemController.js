@@ -190,6 +190,35 @@ const itemModel = require('../models/itemModel');
         });
     }
 
+    // deleteItem(req, res, next) {
+    //     try {
+    //         // Check if the user is logged in
+    //         if (!req.session.user) {
+    //             return res.redirect('/login'); // Redirect to login if not logged in
+    //         }
+
+    //         // Extract the item ID from the request parameters
+    //         const itemId = req.params.id;
+            
+    //         // Instantiate the CartModel to interact with the cart data
+    //         const ItemModel = new itemModel();
+    //         console.log('Deleting item with ID:', itemId); // Log the item ID for debugging
+    //         // Delete the item from the cart using the CartModel method
+    //         ItemModel.deleteItem(itemId)
+    //             .then(() => {
+    //                 // Redirect back to the cart page after deletion
+    //                 res.redirect('/me');
+    //             })
+    //             .catch(err => {
+    //                 console.error('Error deleting item:', err);
+    //                 res.status(500).send('Internal server error'); // Return a 500 error response
+    //             });
+    //     } catch (err) {
+    //         console.error('Error in deleteItem:', err);
+    //         res.status(500).send('Internal server error'); // Return a 500 error response
+    //     }
+    // }
+
 }
 
 // Exporting an instance of the ItemController class

@@ -29,8 +29,7 @@ class LoginController {
 
                 // Return JSON response with redirect URL
                 return res.json({
-                    success: true,
-                    redirectUrl: user.isAdmin ? '/me' : '/user'
+                    redirectUrl: req.session.user.isAdmin ? '/me' : '/user'
                 });
             } else {
                 // If credentials are invalid, return a 401 Unauthorized response

@@ -2,6 +2,7 @@
 const itemModel = require('../models/itemModel');
 const orderModel = require('../models/orderModel');
 const userModel = require('../models/userModel');
+const exclusiveDealsModel = require('../models/exclusiveDealsModel');
 
 class MeController {
 
@@ -17,11 +18,13 @@ class MeController {
             const ItemModel = new itemModel();
             const OrderModel = new orderModel();
             const UserModel = new userModel();
+            const ExclusiveDealsModel = new exclusiveDealsModel();
 
             // Fetch data from the database
             const items = await ItemModel.showitem(); // Get all items
             const orders = await OrderModel.getOrders(); // Get all orders
             const users = await UserModel.getUsers(); // Get all users
+            const exclusiveDeals = await ExclusiveDealsModel.getExclusiveDeals(); // Get exclusive deals
 
             // Calculate overview statistics
             const overview = {
@@ -38,7 +41,8 @@ class MeController {
                 items, // Pass the items data
                 orders, // Pass the orders data
                 users, // Pass the users data
-                overview // Pass the overview statistics
+                overview, // Pass the overview statistics
+                exclusiveDeals
             });
         } catch (error) {
             // Log and handle any errors
@@ -87,6 +91,23 @@ class MeController {
 
         // Render the order-list view with the fetched orders
         res.render('me/order-list', { layout: 'admin', order: order });
+    }
+    async toggleAdmin(req, res) {
+        try {
+            const userId = req.params.id;
+            // Fetch user
+            const user = await userModel.findById(userId);
+            if (!user) {
+                return res.status(404).send('User not found');
+            }
+            // Toggle isAdmin
+            const newIsAdmin = !user.isAdmin;
+            await userModel.updateAdminStatus(userId, newIsAdmin);
+            res.redirect('/me'); // Redirect back to admin dashboard
+        } catch (error) {
+            console.error('Error toggling admin:', error);
+            res.status(500).send('Internal server error');
+        }
     }
 }
 

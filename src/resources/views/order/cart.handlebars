@@ -1,4 +1,4 @@
-<div class="container mt-4">
+{{!-- <div class="container mt-4" >
   <section class ="cart-section">
     <h3>My Order</h3>
 
@@ -42,10 +42,34 @@
       </table>
     </div>
     </section>
-</div>
+</div> --}}
 
+
+<div>
+  
+{{#each cart}}
+  <div class="card order-card">
+    <div class="card-header order-card-header">
+        Order #{{this.id}}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Customer: {{this.user_id}}</h5>
+        <p class="card-text">
+            <strong>Date:</strong> {{this.created_at}}<br>
+            <strong>Total:</strong> ${{this.total}}<br>
+            <strong>Status:</strong> {{this.status}}
+        </p>
+        <form action="/order/{{this.id}}/cancel" method="POST" class="d-inline cancel-order-form">
+                <input type="hidden" name="status" value="cancelled">
+                <button type="submit" class="btn btn-primary text-danger">Cancel Order</button>
+        </form>
+        <a href="/order/track/{{this.id}}" class="btn btn-primary" >Details</a>
+        </div>
+    </div>
+{{/each}}
+</div>
 {{!--Confirm delete--}}
-{{!-- <div id="delete-modal" class="modal" tabindex="-1">
+<div id="delete-modal" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -61,12 +85,12 @@
       </div>
     </div>
   </div>
-</div> --}}
+</div>
 {{!--Delete form --}}
-{{!-- <form id="delete-item-form" method="POST" style="display:none;"></form> --}}
+<form id="delete-item-form" method="POST" style="display:none;"></form>
 
 
-{{!-- <script>
+<script>
     let recipient = null;
     const exampleModal = document.getElementById('delete-modal');
     const deleteForm = document.getElementById('delete-item-form');
@@ -88,4 +112,15 @@
             }
         };
     }
-</script> --}}
+</script>
+
+<style>
+  .order-card {
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .order-card-header {
+      background-color: #f8f9fa;
+      font-weight: bold;
+  }
+</style>

@@ -50,8 +50,34 @@
                     <div class="card-body">
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">${{this.price}}</p>
-                        <a href="/items/{{this.slug}}/edit" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="/items/{{this.id}}?_method=DELETE" method="POST" class="d-inline">
+                        <a href="/item/edit/{{this.slug}}" class="btn btn-warning btn-sm">Edit</a>
+                        {{!-- <button type="button"
+                            class="btn btn-danger btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#delete-modal"
+                            data-item-id="{{this.id}}">
+                            Delete
+                        </button> --}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+    <!-- Exclusive Deals Management -->
+    <section class="my-5">
+        <h2>Manage Exclusive Deals</h2>
+        <a href="/items/new" class="btn btn-primary mb-3">Add New Exclusive Deals</a>
+        <div class="row">
+            {{#each exclusiveDeals}}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{this.image}}" class="card-img-top" alt="{{this.name}}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text">${{this.price}}</p>
+                        <a href="/exclusiveDeals/edit/{{this.id}}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="/exclusiveDeals/{{this.id}}?_method=DELETE" method="POST" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
                     </div>
@@ -116,14 +142,12 @@
                     <td>{{this.username}}</td>
                     <td>{{#if this.isAdmin}}Yes{{else}}No{{/if}}</td>
                     <td>
-                        <form action="/users/{{this.id}}/toggle-admin" method="POST" class="d-inline">
+                        <form action="/me/{{this.id}}/toggle-admin" method="POST" class="d-inline">
                             <button type="submit" class="btn btn-secondary btn-sm">
                                 {{#if this.isAdmin}}Remove Admin{{else}}Make Admin{{/if}}
                             </button>
                         </form>
-                        <form action="/users/{{this.id}}?_method=DELETE" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
+                        
                     </td>
                 </tr>
                 {{/each}}
@@ -147,10 +171,52 @@
         </form>
     </section>
 </div> --}}
+<div id="delete-modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete this?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-item"type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!--Delete form --}}
+<form id="delete-item-form" method="POST" style="display:none;"></form>
 
 <!-- Handlebars Helper for eq -->
 <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    let recipient = null;
+    const deleteModal = document.getElementById('delete-modal');
+    const deleteForm = document.getElementById('delete-item-form');
+    const btnDeleteItem = document.getElementById('btn-delete-item');
+
+    // Listen for modal show event
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        recipient = button.getAttribute('data-item-id');
+    });
+
+    // When delete is confirmed
+    btnDeleteItem.addEventListener('click', function () {
+        if (recipient) {
+            deleteForm.action = `/item/${recipient}?_method=DELETE`;
+            deleteForm.submit();
+        }
+    });
+});
 Handlebars.registerHelper('eq', function (a, b) {
     return a === b;
 });
+
 </script>

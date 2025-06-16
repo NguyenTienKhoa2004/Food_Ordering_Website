@@ -1151,7 +1151,7 @@ body.modal-open {
 
 .menu-section {
     padding: 50px 0;
-    margin-top :80px;
+    margin-top :0px;
 }
 .menu-card {
     background-color: #ffffff;
@@ -1615,9 +1615,9 @@ body.showCart .cartTab{
         font-size: 2rem;
     }
 }
-
+/* Main */
 .main {
-    margin-top: 100px;
+    margin-top: 90px;
 }
 
 

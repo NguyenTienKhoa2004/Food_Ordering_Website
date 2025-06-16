@@ -61,12 +61,39 @@ class itemModel {
             }
         });
     }
-
+    showCategory() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const connection = await getConnection(); // Establish a database connection
+                const sql = 'SELECT * FROM categories'; // SQL query to fetch all categories
+                const [rows] = await connection.execute(sql); // Execute the query
+                await connection.end(); // Close the database connection
+                resolve(rows); // Resolve the promise with the fetched rows
+            } catch (error) {
+                console.error('Error fetching categories:', error); // Log any errors
+                reject(error); // Reject the promise with the error
+            }
+        });
+    }
+    showSuggestions() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const connection = await getConnection(); // Establish a database connection
+                const sql = 'SELECT * FROM items ORDER BY RAND() LIMIT 5'; // SQL query to fetch random suggestions
+                const [rows] = await connection.execute(sql); // Execute the query
+                await connection.end(); // Close the database connection
+                resolve(rows); // Resolve the promise with the fetched rows
+            } catch (error) {
+                console.error('Error fetching suggestions:', error); // Log any errors
+                reject(error); // Reject the promise with the error
+            }
+        });
+    }
     getItemsByCategory(name) {
         return new Promise(async (resolve, reject) => {
             try {
                 const connection = await getConnection(); // Establish a database connection
-                const sql = 'SELECT * FROM items WHERE name LIKE ?'; // SQL query to fetch items by name
+                const sql = 'SELECT * FROM items WHERE category LIKE ?'; // SQL query to fetch items by name
                 const [rows] = await connection.execute(sql, [`%${name}%`]); // Execute the query
                 await connection.end(); // Close the database connection
                 resolve(rows); // Resolve the promise with the fetched rows
@@ -148,6 +175,22 @@ class itemModel {
             }
         });
     }
+
+    // deleteItem(id) {
+    //     return new Promise(async (resolve, reject) => {
+    //         try {
+    //             const connection = await getConnection(); // Establish a database connection
+    //             await connection.execute('DELETE FROM order_items WHERE item_id = ?', [id]);
+    //             const sql = 'DELETE FROM items WHERE id = ?'; // SQL query to delete the item
+    //             const [result] = await connection.execute(sql, [id]); // Execute the query
+    //             await connection.end(); // Close the database connection
+    //             resolve(result); // Resolve the promise with the result
+    //         } catch (error) {
+    //             console.error('Error deleting item:', error); // Log any errors
+    //             reject(error); // Reject the promise with the error
+    //         }
+    //     });
+    // }
 }
 
 // Exporting the itemModel class for use in other parts of the application

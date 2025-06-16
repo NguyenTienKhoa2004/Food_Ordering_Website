@@ -1,7 +1,6 @@
-
 <div class="container2">
     <section class="menu-section">
-        <div class="details-container">
+        <div class="details-container listProduct">
             <div class="image-container">
                 <img src="{{item.image}}" alt="{{item.name}}" class="image-details">
             </div>
@@ -11,17 +10,14 @@
                 
                 <p>Price: ${{item.price}}</p>
                 <a  class="btn btn-primary "
-                    data-id="{{id}}"
-                    data-name="{{name}}"
-                    data-image="{{image}}"
-                    data-price="{{price}}"
+                    data-id="{{item.id}}"
+                    data-name="{{item.name}}"
+                    data-image="{{item.image}}"
+                    data-price="{{item.price}}"
                     >
                     Order Now
                 </a>
             </div>
-            
-           
-    
         </div>
     </section>
 </div>

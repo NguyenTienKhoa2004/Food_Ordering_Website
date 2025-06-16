@@ -101,7 +101,8 @@ const addCartToMemory2 = () => {
 if (listProductHTML) {
     listProductHTML.addEventListener('click', (event) => {
         let positionClick = event.target;
-        if(positionClick.classList.contains('btn-order-now')){
+        if(positionClick.classList.contains('btn-order-now')||
+        positionClick.classList.contains('btn-primary')){
             let id = positionClick.dataset.id;
             let name = positionClick.dataset.name;
             let image = positionClick.dataset.image;

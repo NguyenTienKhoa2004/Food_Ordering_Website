@@ -51,6 +51,17 @@ class UserModel {
         await connection.execute(sql, [username, email, password]);
         await connection.end();
     }
+    static async findById(id) {
+        const connection = await getConnection();
+        const [rows] = await connection.execute('SELECT * FROM users WHERE id = ?', [id]);
+        await connection.end();
+        return rows[0];
+    }
+    static async updateAdminStatus(id, isAdmin) {
+        const connection = await getConnection();
+        await connection.execute('UPDATE users SET isAdmin = ? WHERE id = ?', [isAdmin ? 1 : 0, id]);
+        await connection.end();
+    }
 }
 
 // Exporting the UserModel class for use in other parts of the application

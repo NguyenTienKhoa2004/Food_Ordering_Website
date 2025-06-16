@@ -5,6 +5,9 @@ const exclusiveDealsController = require('../app/controller/ExclusiveDealsContro
 
 router.get('/create', exclusiveDealsController.create);
 router.post('/store', exclusiveDealsController.store);
+router.get('/edit/:id', exclusiveDealsController.edit);
+router.put('/:id', exclusiveDealsController.update);
+router.delete('/:id', exclusiveDealsController.deleteItem);
 
 
 

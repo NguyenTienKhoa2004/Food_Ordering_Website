@@ -6,10 +6,10 @@
     <div class="categories-grid">
       {{#each categories}}
         <div class="category-card">
-          <img src="{{this.image}}" alt="{{this.name}}" />
+          <img src="{{this.image_url}}" alt="{{this.category_name}}" />
           <div class="category-info">
-            <h3>{{this.name}}</h3>
-            <p>{{this.count}} Restaurants</p>
+            <h3>{{this.category_name}}</h3>
+            
           </div>
         </div>
       {{/each}}

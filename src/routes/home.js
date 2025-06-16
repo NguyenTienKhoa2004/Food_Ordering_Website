@@ -11,8 +11,7 @@ router.get('/login', loginController.login);
 router.post('/login', loginController.authentication);
 router.post('/signup', loginController.signup);
 router.get('/logout', loginController.logout);
-router.get('/search', homeController.search);
-router.get('/restaurant', homeController.restaurant);
+
 
 
 
