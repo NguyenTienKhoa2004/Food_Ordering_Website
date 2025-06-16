@@ -222,7 +222,7 @@ a {
 .nav ul {
   display: flex;
   list-style: none;
-  gap: 40px;
+  gap: 55px;
   justify-content: center;
   align-items: center;
 }
@@ -287,6 +287,19 @@ a {
   color: #423c3c;
 }
 
+.header .dropdown img {
+  width: 50px ;
+  height: 50px ;
+  border: 2px solid #ffd95e;
+  object-fit: cover;
+}
+
+.header .dropdown .fs-2 { /* username */
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 400;
+  padding: 5px;
+}
 /*========================= 
  6. Hero Section
 =========================*/
@@ -628,11 +641,49 @@ a {
   color: #ffd95e;
   margin: 0;
 }
+/*========================= 
+ 10. Suggestion Section
+=========================*/
+.suggestion-card {
+  transition: transform 0.3s ease;
+  border: none;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 300px;
+  margin-right: 1rem;
+}
+.suggestion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.suggestion-img {
+  height: 200px;
+  object-fit: fill;
+}
+.suggestion-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+.suggestion-price {
+  color: #e44d26;
+  font-weight: 500;
+}
+.suggestion-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 1rem;
+}
+
+
 
 /*========================= 
  10. About Us Section
 =========================*/
 .about-us {
+  max-width: 1528px;
   width: 95%;
   padding: 40px;
   background: #FFF;
@@ -1419,8 +1470,8 @@ body.showCart .cartTab{
     overflow-x: auto;
     scroll-behavior: smooth;
     padding-bottom: 1rem;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-
+    /* max-width: 1528px; */
+    /* margin: 0 auto; */
 }
 .suggestion-container::-webkit-scrollbar {
     height: 0px;
@@ -1469,4 +1520,113 @@ body.showCart .cartTab{
     gap: 16px;
     align-items: center;
   }
+}
+
+/*========================= 
+ Profile Page Styles
+=========================*/
+.profile-container {
+  max-width: 1528px;
+  margin: 50px auto;
+  padding: 75px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.profile-header h2 {
+    font-size: 4.0 rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.profile-header p {
+    font-size: 2.0 rem;
+    color: #666;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffd95e;
+    margin-bottom: 20px;
+}
+.profile-form {
+  gap: 20px;
+}
+
+.profile-form .form-label {
+  padding: 10px 10px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.profile-form .form-control {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px 32px;
+    font-size: 2rem;
+    transition: border-color 0.3s ease;
+}
+
+.profile-form .form-control:focus {
+    border-color: #ffd95e;
+    box-shadow: 0 0 0 0.2rem rgba(255, 217, 94, 0.25);
+}
+
+.profile-form .form-control[readonly] {
+    background-color: #f8f9fa;
+}
+
+.profile-form .btn-primary {
+    background-color: #ffd95e;
+    border-color: #ffd95e;
+    color: #333;
+    font-weight: 500;
+    padding: 18px 36px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.profile-form .btn-primary:hover {
+    background-color: #ffd300;
+    border-color: #ffd300;
+    transform: translateY(-2px);
+}
+
+/* Responsive styles for profile page */
+@media (max-width: 768px) {
+    .profile-container {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .profile-header h2 {
+        font-size: 2rem;
+    }
+}
+
+.main {
+    margin-top: 100px;
+}
+
+
+
+form.profile-form input.form-control {
+    font-size: 1.65rem ;
+    padding: 10px 10px ;
+}
+
+.profile-columns-gap {
+    column-gap: 10px;
 }
