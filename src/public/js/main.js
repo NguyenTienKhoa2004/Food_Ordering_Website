@@ -69,90 +69,100 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add active class to clicked tab
             this.classList.add('active');
             
-            // Here you would typically show/hide content based on tab
-            // For now just a placeholder, would need content sections to manipulate
-            console.log('Tab clicked:', this.textContent);
+            // Animation for 'Who we are' tab
+            const faqCardsRow = document.querySelector('.faq-cards-row');
+            if (this.textContent.trim() === 'Who we are?') {
+                if (faqCardsRow) {
+                    faqCardsRow.innerHTML = `<div class=\"who-we-are-text\">Introducing Foozie – Your Smart Food Delivery Companion<br><br>Foozie is a modern food delivery website designed to bring your favorite meals straight to your door — fast, fresh, and hassle-free. Whether you're craving local Vietnamese dishes or international cuisine, Foozie connects you with a wide range of restaurants and food vendors in just a few taps.<br><br>With a user-friendly interface, real-time order tracking, secure payments, and customizable delivery options (home delivery or in-store pickup), Foozie makes every meal more convenient and enjoyable.<br><br><span class=\"who-we-are-highlight\">Eat smart. Eat fast. Eat with Foozie.</span></div>`;
+                    setTimeout(() => {
+                        const whoText = document.querySelector('.who-we-are-text');
+                        if (whoText) whoText.classList.add('show');
+                    }, 50);
+                }
+            } else if (faqCardsRow && (this.textContent.trim() === 'Frequent Questions' || this.textContent.trim() === 'How does Foodzie work?')) {
+                faqCardsRow.innerHTML = originalFaqCardsRowHTML;
+                reattachFaqListeners();
+            }
         });
     });
 
     // ====== FAQ Questions ======
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    const faqAnswer = document.querySelector('.faq-answer');
-    
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', function() {
-            // Remove active class from all questions
-            faqQuestions.forEach(q => {
-                q.classList.remove('active');
+    function reattachFaqListeners() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        const faqAnswer = document.querySelector('.faq-answer');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', function() {
+                faqQuestions.forEach(q => q.classList.remove('active'));
+                this.classList.add('active');
+                const questionText = this.textContent;
+                if (questionText.includes('payment methods')) {
+                    faqAnswer.innerHTML = `
+                        <div class="faq-cards-row">
+                            <div class="faq-card">
+                                <img src="/img/credit-card-svgrepo-com.svg" alt="Credit Card" />
+                                <h3>Credit & Debit Cards</h3>
+                                <p>We accept all major credit and debit cards for payment</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/wallet-one-svgrepo-com.svg" alt="Digital Wallet" />
+                                <h3>Digital Wallets</h3>
+                                <p>Pay easily with Apple Pay, Google Pay, and other digital wallets</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/cash-bill-svgrepo-com.svg" alt="Cash" />
+                                <h3>Cash on Delivery</h3>
+                                <p>Pay with cash when your order arrives at your doorstep</p>
+                            </div>
+                        </div>`;
+                } else if (questionText.includes('real-time')) {
+                    faqAnswer.innerHTML = `
+                        <div class="faq-cards-row">
+                            <div class="faq-card">
+                                <img src="/img/Track Order.svg" alt="Track Order" />
+                                <h3>Real-time Tracking</h3>
+                                <p>Watch your order's journey from restaurant to your doorstep in real-time</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/Mobile App.svg" alt="Mobile App" />
+                                <h3>Mobile App</h3>
+                                <p>Get push notifications about your order status on our mobile app</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/Support.svg" alt="Support" />
+                                <h3>Customer Support</h3>
+                                <p>Contact our support team anytime for updates on your order</p>
+                            </div>
+                        </div>`;
+                } else if (questionText.includes('promotions')) {
+                    faqAnswer.innerHTML = `
+                        <div class="faq-cards-row">
+                            <div class="faq-card">
+                                <img src="/img/Special Promotions.svg" alt="Promotions" />
+                                <h3>Special Promotions</h3>
+                                <p>Regular discounts and promotional offers throughout the year</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/Loyalty Program.svg" alt="Loyalty Program" />
+                                <h3>Loyalty Program</h3>
+                                <p>Earn points with every order and redeem them for discounts</p>
+                            </div>
+                            <div class="faq-card">
+                                <img src="/img/Referral Program.svg" alt="Referral" />
+                                <h3>Referral Program</h3>
+                                <p>Get discounts by referring friends and family to Foodzie</p>
+                            </div>
+                        </div>`;
+                } else if (questionText.includes('How does Foodzie work')) {
+                    const faqCardsRow = document.querySelector('.faq-cards-row');
+                    if (faqCardsRow) {
+                        faqCardsRow.innerHTML = originalFaqCardsRowHTML;
+                    }
+                }
             });
-            // Add active class to clicked question
-            this.classList.add('active');
-            
-            // Change answer content based on question (placeholder)
-            // In a real implementation, you'd have multiple answer divs or data attributes
-            const questionText = this.textContent;
-            
-            // Simple content switch example
-            if (questionText.includes('payment methods')) {
-                faqAnswer.innerHTML = `
-                    <div class="faq-cards-row">
-                        <div class="faq-card">
-                            <img src="/img/icons/credit-card.svg" alt="Credit Card" />
-                            <h3>Credit & Debit Cards</h3>
-                            <p>We accept all major credit and debit cards for payment</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/digital-wallet.svg" alt="Digital Wallet" />
-                            <h3>Digital Wallets</h3>
-                            <p>Pay easily with Apple Pay, Google Pay, and other digital wallets</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/cash.svg" alt="Cash" />
-                            <h3>Cash on Delivery</h3>
-                            <p>Pay with cash when your order arrives at your doorstep</p>
-                        </div>
-                    </div>`;
-            } else if (questionText.includes('track my order')) {
-                faqAnswer.innerHTML = `
-                    <div class="faq-cards-row">
-                        <div class="faq-card">
-                            <img src="/img/icons/track.svg" alt="Track Order" />
-                            <h3>Real-time Tracking</h3>
-                            <p>Watch your order's journey from restaurant to your doorstep in real-time</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/app.svg" alt="Mobile App" />
-                            <h3>Mobile App</h3>
-                            <p>Get push notifications about your order status on our mobile app</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/support.svg" alt="Support" />
-                            <h3>Customer Support</h3>
-                            <p>Contact our support team anytime for updates on your order</p>
-                        </div>
-                    </div>`;
-            } else if (questionText.includes('discounts')) {
-                faqAnswer.innerHTML = `
-                    <div class="faq-cards-row">
-                        <div class="faq-card">
-                            <img src="/img/icons/promotion.svg" alt="Promotions" />
-                            <h3>Special Promotions</h3>
-                            <p>Regular discounts and promotional offers throughout the year</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/loyalty.svg" alt="Loyalty Program" />
-                            <h3>Loyalty Program</h3>
-                            <p>Earn points with every order and redeem them for discounts</p>
-                        </div>
-                        <div class="faq-card">
-                            <img src="/img/icons/referral.svg" alt="Referral" />
-                            <h3>Referral Program</h3>
-                            <p>Get discounts by referring friends and family to Foodzie</p>
-                        </div>
-                    </div>`;
-            }
         });
-    });
+    }
+    // Attach initially
+    reattachFaqListeners();
 
     // ====== Search Bar Functionality ======
     const searchForm = document.querySelector('.search-bar');
@@ -448,6 +458,13 @@ document.addEventListener('DOMContentLoaded', function() {
             closeSignupModal();
         }
     });
+
+    // Store the original FAQ cards row HTML for restoration
+    let originalFaqCardsRowHTML = '';
+    const faqCardsRow = document.querySelector('.faq-cards-row');
+    if (faqCardsRow) {
+        originalFaqCardsRowHTML = faqCardsRow.innerHTML;
+    }
 });
 
 

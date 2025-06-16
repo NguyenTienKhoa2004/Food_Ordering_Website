@@ -170,7 +170,30 @@ class OrderController {
         }
     }
 
-    
+    deleteOrder(req, res) {
+        try {
+            // Check if the user is logged in and is an admin
+            if (!req.session.user || !req.session.user.isAdmin) {
+                return res.status(403).send('Access denied: Admins only'); // Return 403 if the user is not an admin
+            }
+
+            // Extract the order ID from the request parameters
+            const orderId = req.params.id;
+
+            // Instantiate the orderModel to interact with the order data
+            const OrderModel = new orderModel();
+
+            // Delete the order in the database
+            OrderModel.deleteOrder(orderId);
+
+            // Redirect to the admin dashboard with a success message
+            res.redirect('/me?success=Order+deleted');
+        } catch (error) {
+            // Log and handle any errors
+            console.error('Error deleting order:', error);
+            res.status(500).send('Internal server error'); // Return a 500 error response
+        }
+    }
 }
 
 // Exporting an instance of the OrderController class

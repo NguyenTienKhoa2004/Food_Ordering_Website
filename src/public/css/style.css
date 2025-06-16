@@ -25,6 +25,7 @@ body {
 main {
   flex: 1;
   transition: transform .5s;
+  margin-top: 140px;
 }
 
 a {
@@ -683,9 +684,12 @@ a {
  10. About Us Section
 =========================*/
 .about-us {
+  position: relative;
+  padding-bottom: 60px; /* Add space for the description */
   max-width: 1528px;
   width: 95%;
-  padding: 40px;
+  height: 550px;
+  padding: 50px;
   background: #FFF;
   border-radius: 25px;
   margin: 50px auto 44px;
@@ -771,6 +775,12 @@ a {
   padding: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   flex: 1;
+  transition: all 0.3s ease;
+}
+
+.faq-card.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .faq-card img {
@@ -792,10 +802,40 @@ a {
 }
 
 .about-description {
-  font-size: 1.4rem;
-  color: #555;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
   text-align: center;
-  margin-top: 16px;
+  width: 100%;
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+  padding: 0 24px;
+  background: transparent;
+  pointer-events: none;
+}
+/* Who We Are About Us Section */
+.who-we-are-text {
+  opacity: 0;
+  transition: opacity 0.7s;
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 32px 12px;
+  width: 100%;
+  line-height: 1.5;
+}
+.who-we-are-text > * {
+  margin-bottom: 5px;
+}
+.who-we-are-text.show {
+  opacity: 1;
+}
+.who-we-are-highlight {
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: block;
+  margin-top: 1.5rem;
 }
 
 /*========================= 
@@ -1615,9 +1655,9 @@ body.showCart .cartTab{
         font-size: 2rem;
     }
 }
-/* Main */
+
 .main {
-    margin-top: 90px;
+    margin-top: 100px;
 }
 
 
