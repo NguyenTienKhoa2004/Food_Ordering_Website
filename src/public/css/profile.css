@@ -1,121 +1,108 @@
-/* Profile Page Styles */
+/*========================= 
+ Profile Page Styles
+=========================*/
 .profile-container {
-    max-width: 800px;
+    max-width: 1528px;
     margin: 50px auto;
-    padding: 30px;
+    padding: 75px;
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-}
-
-.profile-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.profile-header h2 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 8px;
-}
-
-.profile-header p {
-    color: #666;
-    font-size: 1.1rem;
-}
-
-.profile-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ffd95e;
-    margin-bottom: 20px;
-}
-
-.profile-form .form-label {
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.profile-form .form-control {
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.profile-form .form-control:focus {
-    border-color: #ffd95e;
-    box-shadow: 0 0 0 0.2rem rgba(255, 217, 94, 0.25);
-}
-
-.profile-form .form-control[readonly] {
-    background-color: #f8f9fa;
-}
-
-.profile-form .btn-primary {
-    background-color: #ffd95e;
-    border-color: #ffd95e;
-    color: #333;
-    font-weight: 500;
-    padding: 12px 24px;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.profile-form .btn-primary:hover {
-    background-color: #ffd300;
-    border-color: #ffd300;
-    transform: translateY(-2px);
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .profile-container {
-        margin: 20px;
-        padding: 20px;
-    }
-    
-    .profile-header h2 {
-        font-size: 2rem;
-    }
-}
-
-/* Delivery Location Section */
-.profile-delivery-location {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-    padding: 12px 0;
-}
-
-.profile-delivery-location strong {
-    font-size: 1.15em;
-}
-
-.profile-delivery-location .text-muted {
-    margin-left: 8px;
-    font-size: 1em;
-    color: #888;
-    padding-bottom: 15px;
-}
-
-.profile-delivery-location .btn-outline-success {
-    border-radius: 12px;
-    padding: 6px 18px;
-    font-size: 1em;
-    border-width: 2px;
-    font-weight: 500;
-    transition: background 0.2s, color 0.2s;
-}
-
-.profile-delivery-location .btn-outline-success:hover {
-    background: #198754;
-    color: #fff;
-    border-color: #198754;
-} 
+  }
+  
+  .profile-header {
+      text-align: center;
+      margin-bottom: 40px;
+  }
+  
+  .profile-header h2 {
+      font-size: 4.0 rem;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 8px;
+  }
+  
+  .profile-header p {
+      font-size: 2.0 rem;
+      color: #666;
+  }
+  
+  .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ffd95e;
+      margin-bottom: 20px;
+  }
+  .profile-form {
+    gap: 20px;
+  }
+  
+  .profile-form .form-label {
+    padding: 10px 10px;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+  }
+  
+  .profile-form .form-control {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 24px 32px;
+      font-size: 2rem;
+      transition: border-color 0.3s ease;
+  }
+  
+  .profile-form .form-control:focus {
+      border-color: #ffd95e;
+      box-shadow: 0 0 0 0.2rem rgba(255, 217, 94, 0.25);
+  }
+  
+  .profile-form .form-control[readonly] {
+      background-color: #f8f9fa;
+  }
+  
+  .profile-form .btn-primary {
+      background-color: #ffd95e;
+      border-color: #ffd95e;
+      color: #333;
+      font-weight: 500;
+      padding: 18px 36px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+  }
+  
+  .profile-form .btn-primary:hover {
+      background-color: #ffd300;
+      border-color: #ffd300;
+      transform: translateY(-2px);
+  }
+  
+  /* Responsive styles for profile page */
+  @media (max-width: 768px) {
+      .profile-container {
+          margin: 20px;
+          padding: 20px;
+      }
+      
+      .profile-header h2 {
+          font-size: 2rem;
+      }
+  }
+  
+  .main {
+      margin-top: 100px;
+  }
+  
+  
+  
+  form.profile-form input.form-control {
+      font-size: 1.65rem ;
+      padding: 10px 10px ;
+  }
+  
+  .profile-columns-gap {
+      column-gap: 10px;
+  }

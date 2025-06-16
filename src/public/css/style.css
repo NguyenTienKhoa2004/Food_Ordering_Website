@@ -25,6 +25,7 @@ body {
 main {
   flex: 1;
   transition: transform .5s;
+  margin-top: 140px;
 }
 
 a {
@@ -683,9 +684,12 @@ a {
  10. About Us Section
 =========================*/
 .about-us {
+  position: relative;
+  padding-bottom: 60px; /* Add space for the description */
   max-width: 1528px;
   width: 95%;
-  padding: 40px;
+  height: 550px;
+  padding: 50px;
   background: #FFF;
   border-radius: 25px;
   margin: 50px auto 44px;
@@ -771,6 +775,12 @@ a {
   padding: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   flex: 1;
+  transition: all 0.3s ease;
+}
+
+.faq-card.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .faq-card img {
@@ -792,10 +802,40 @@ a {
 }
 
 .about-description {
-  font-size: 1.4rem;
-  color: #555;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
   text-align: center;
-  margin-top: 16px;
+  width: 100%;
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+  padding: 0 24px;
+  background: transparent;
+  pointer-events: none;
+}
+/* Who We Are About Us Section */
+.who-we-are-text {
+  opacity: 0;
+  transition: opacity 0.7s;
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 32px 12px;
+  width: 100%;
+  line-height: 1.5;
+}
+.who-we-are-text > * {
+  margin-bottom: 5px;
+}
+.who-we-are-text.show {
+  opacity: 1;
+}
+.who-we-are-highlight {
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: block;
+  margin-top: 1.5rem;
 }
 
 /*========================= 
@@ -1522,111 +1562,5 @@ body.showCart .cartTab{
   }
 }
 
-/*========================= 
- Profile Page Styles
-=========================*/
-.profile-container {
-  max-width: 1528px;
-  margin: 50px auto;
-  padding: 75px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-}
-
-.profile-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.profile-header h2 {
-    font-size: 4.0 rem;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 8px;
-}
-
-.profile-header p {
-    font-size: 2.0 rem;
-    color: #666;
-}
-
-.profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ffd95e;
-    margin-bottom: 20px;
-}
-.profile-form {
-  gap: 20px;
-}
-
-.profile-form .form-label {
-  padding: 10px 10px;
-    font-size: 1.8rem;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.profile-form .form-control {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 24px 32px;
-    font-size: 2rem;
-    transition: border-color 0.3s ease;
-}
-
-.profile-form .form-control:focus {
-    border-color: #ffd95e;
-    box-shadow: 0 0 0 0.2rem rgba(255, 217, 94, 0.25);
-}
-
-.profile-form .form-control[readonly] {
-    background-color: #f8f9fa;
-}
-
-.profile-form .btn-primary {
-    background-color: #ffd95e;
-    border-color: #ffd95e;
-    color: #333;
-    font-weight: 500;
-    padding: 18px 36px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.profile-form .btn-primary:hover {
-    background-color: #ffd300;
-    border-color: #ffd300;
-    transform: translateY(-2px);
-}
-
-/* Responsive styles for profile page */
-@media (max-width: 768px) {
-    .profile-container {
-        margin: 20px;
-        padding: 20px;
-    }
-    
-    .profile-header h2 {
-        font-size: 2rem;
-    }
-}
-
-.main {
-    margin-top: 100px;
-}
 
 
-
-form.profile-form input.form-control {
-    font-size: 1.65rem ;
-    padding: 10px 10px ;
-}
-
-.profile-columns-gap {
-    column-gap: 10px;
-}
