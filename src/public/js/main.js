@@ -465,6 +465,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (faqCardsRow) {
         originalFaqCardsRowHTML = faqCardsRow.innerHTML;
     }
+
+    const orderBtn = document.getElementById('order-now-btn');
+    const dealsSection = document.getElementById('exclusive-deals');
+    if (orderBtn && dealsSection) {
+        orderBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            dealsSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
 });
 
 
