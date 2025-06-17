@@ -1373,7 +1373,7 @@ header .icon-cart span{
     display: flex;
     width: 20px;
     height: 20px;
-    background-color: red;
+    background-color: rgb(247, 63, 63);
     justify-content: center;
     align-items: center;
     color: white;
@@ -1525,6 +1525,7 @@ body.showCart .cartTab{
 }
 
 .btn-primary {
+  
   background: #ffd95e;
   border: none;
   color: #fff;
@@ -1535,7 +1536,7 @@ body.showCart .cartTab{
   transition: background-color 0.3s ease;
 }
 .btn-primary:hover {
-  background: #e0a800;
+  background: #ffd000;
 }
 
 .Suggestion-title{
@@ -1548,6 +1549,7 @@ body.showCart .cartTab{
   width: 100%;
   gap: 8px;
 }
+
 
 .suggestion {
   padding: 40px;
