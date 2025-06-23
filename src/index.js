@@ -9,6 +9,9 @@ const app = express();
 const port = 3000;
 const route = require('./routes/index');
 
+require('dotenv').config();
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
@@ -48,6 +51,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Middleware to determine user role (example)
 
 route(app);
+
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
 
 

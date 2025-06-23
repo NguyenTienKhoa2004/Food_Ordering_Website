@@ -61,6 +61,22 @@ class itemModel {
             }
         });
     }
+
+//     showitem() {
+//     return new Promise(async (resolve, reject) => {
+//         let connection;
+//         try {
+//             connection = await getConnection();
+//             const [rows] = await connection.execute('SELECT * FROM items');
+//             resolve(rows);
+//         } catch (error) {
+//             console.error('Error fetching items:', error);
+//             reject(error);
+//         } finally {
+//             if (connection) connection.release(); // Release instead of end
+//         }
+//     });
+// }
     showCategory() {
         return new Promise(async (resolve, reject) => {
             try {

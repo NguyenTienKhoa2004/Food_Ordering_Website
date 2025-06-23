@@ -4,13 +4,14 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --inspect src/index.js",
+    "start": "node src/index.js",
     "watch": "sass --watch src/resources/scss/app.scss  src/public/css/app.css"
   },
   "author": "Khoa",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-handlebars": "^8.0.1",
     "express-session": "^1.18.1",

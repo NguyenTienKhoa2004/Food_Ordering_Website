@@ -15,7 +15,7 @@ class exclusiveDealsModel {
               
 
                 // SQL query to insert the item into the database
-                const sql = 'INSERT INTO exclusiveDeals (image, discount, name) VALUES (?, ?, ?)';
+                const sql = 'INSERT INTO exclusivedeals (image, discount, name) VALUES (?, ?, ?)';
                 const values = [itemData.image, itemData.discount, itemData.name];
 
                 // Execute the query and resolve the result
@@ -34,7 +34,7 @@ class exclusiveDealsModel {
         return new Promise(async (resolve, reject) => {
             try {
                 const connection = await getConnection(); // Establish a database connection
-                const sql = 'SELECT * FROM exclusiveDeals'; // SQL query to fetch all items
+                const sql = 'SELECT * FROM exclusivedeals'; // SQL query to fetch all items
                 const [rows] = await connection.execute(sql); // Execute the query
                 await connection.end(); // Close the database connection
                 resolve(rows); // Resolve the promise with the fetched rows
@@ -48,7 +48,7 @@ class exclusiveDealsModel {
         return new Promise(async (resolve, reject) => {
             try {
                 const connection = await getConnection(); // Establish a database connection
-                const sql = 'SELECT * FROM exclusiveDeals'; // SQL query to fetch all exclusive deals
+                const sql = 'SELECT * FROM exclusivedeals'; // SQL query to fetch all exclusive deals
                 const [rows] = await connection.execute(sql); // Execute the query
                 await connection.end(); // Close the database connection
                 resolve(rows); // Resolve the promise with the fetched rows
@@ -63,7 +63,7 @@ class exclusiveDealsModel {
         return new Promise(async (resolve, reject) => {
             try {
                 const connection = await getConnection(); // Establish a database connection
-                const sql = 'SELECT * FROM exclusiveDeals WHERE id = ?'; // SQL query to fetch exclusive deal by ID
+                const sql = 'SELECT * FROM exclusivedeals WHERE id = ?'; // SQL query to fetch exclusive deal by ID
                 const [rows] = await connection.execute(sql, [id]); // Execute the query with the provided ID
                 await connection.end(); // Close the database connection
 
@@ -85,7 +85,7 @@ class exclusiveDealsModel {
                 const connection = await getConnection(); // Establish a database connection
 
                 // SQL query to update the exclusive deal in the database
-                const sql = 'UPDATE exclusiveDeals SET image = ?, discount = ?, name = ? WHERE id = ?';
+                const sql = 'UPDATE exclusivedeals SET image = ?, discount = ?, name = ? WHERE id = ?';
                 const values = [itemData.image, itemData.discount, itemData.name, id];
 
                 // Execute the query and resolve the result
@@ -102,7 +102,7 @@ class exclusiveDealsModel {
         return new Promise(async (resolve, reject) => {
             try {
                 const connection = await getConnection(); // Establish a database connection
-                const sql = 'DELETE FROM exclusiveDeals WHERE id = ?'; // SQL query to delete the exclusive deal by ID
+                const sql = 'DELETE FROM exclusivedeals WHERE id = ?'; // SQL query to delete the exclusive deal by ID
                 const [result] = await connection.execute(sql, [id]); // Execute the query with the provided ID
                 await connection.end(); // Close the database connection
                 resolve(result); // Resolve the promise with the result of the deletion
