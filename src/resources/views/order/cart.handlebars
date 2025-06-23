@@ -1,72 +1,24 @@
-{{!-- <div class="container mt-4" >
-  <section class ="cart-section">
-    <h3>My Order</h3>
-
-    <div class="cart-table-wrapper">
-      <table class="table mt-4">
-          <thead>
-              <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">User_ID</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Dated</th>
-                  <th scope="col">Street</th>
-                  <th scope="col">City</th>
-                  <th scope="col">Postal</th>
-                  <th scope="col">Payment</th>
-              </tr>
-          </thead>
-          <tbody>
-              {{#each cart}}
-              <tr>
-                  <th scope="row">{{sum @index 1}}</th>
-                  <td>{{this.user_id}}</td>
-                  <td>{{this.total}}</td>
-                  <td>{{this.status}}</td>
-                  <td>{{this.created_at}}</td>
-                  <td>{{this.street}}</td>
-                  <td>{{this.city}}</td>
-                  <td>{{this.postal}}</td>
-                  <td>{{this.Payment}}</td>
-                  <td>
-                      <form action="/order/{{this.id}}/cancel" method="POST" class="d-inline cancel-order-form">
-                        <input type="hidden" name="status" value="cancelled">
-                        <button type="submit" class="btn btn-link text-danger">Cancel Order</button>
-                      </form>
-                      <a href="/order/track/{{this.id}}" class="btn btn-link" >Details</a>
-                  </td>
-              </tr>
-              {{/each}}
-          </tbody>
-      </table>
-    </div>
-    </section>
-</div> --}}
-
-
-<div>
-  
-{{#each cart}}
-  <div class="card order-card">
-    <div class="card-header order-card-header">
-        Order #{{this.id}}
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">Customer: {{this.user_id}}</h5>
-        <p class="card-text">
-            <strong>Date:</strong> {{this.created_at}}<br>
-            <strong>Total:</strong> ${{this.total}}<br>
-            <strong>Status:</strong> {{this.status}}
-        </p>
-        <form action="/order/{{this.id}}/cancel" method="POST" class="d-inline cancel-order-form">
-                <input type="hidden" name="status" value="cancelled">
-                <button type="submit" class="btn btn-primary text-danger">Cancel Order</button>
-        </form>
-        <a href="/order/track/{{this.id}}" class="btn btn-primary" >Details</a>
-        </div>
-    </div>
-{{/each}}
+<div class ="order-section">
+  {{#each cart}}
+    <div class="card order-card">
+      <div class="card-header order-card-header">
+          Order #{{this.id}}
+      </div>
+      <div class="card-body">
+          <h5 class="card-title">Customer: {{this.user_id}}</h5>
+          <p class="card-text">
+              <strong>Date:</strong> {{this.created_at}}<br>
+              <strong>Total:</strong> ${{this.total}}<br>
+              <strong>Status:</strong> {{this.status}}
+          </p>
+          <form action="/order/{{this.id}}/cancel" method="POST" class="d-inline cancel-order-form">
+                  <input type="hidden" name="status" value="cancelled">
+                  <button type="submit" class="btn btn-primary text-danger">Cancel Order</button>
+          </form>
+          <a href="/order/track/{{this.id}}" class="btn btn-primary" >Details</a>
+          </div>
+      </div>
+  {{/each}}
 </div>
 {{!--Confirm delete--}}
 <div id="delete-modal" class="modal" tabindex="-1">

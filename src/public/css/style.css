@@ -77,24 +77,15 @@ a {
   flex-direction: column;
   gap: 24px;
   text-align: center;
-
+  
   
 }
 .order-section .container {
   display: flex;
   flex-direction: column;
-  
   gap: 24px;
 }
-.container2{
-   
-    margin: auto;
-  
-    text-align: center;
-   
-    transition: transform .5s;
-    
-}
+
 
 .cart-container-fixed {
   max-width: 900px; /* or your preferred width */
@@ -109,85 +100,13 @@ a {
   border-radius: 8px;
   background: #ffffff;
 }
+.main {
+    margin-top: 100px;
+}
 
 /*========================= 
  4. Top Bar
 =========================*/
-.top-bar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #FAFAFA;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0 0 12px 12px;
-  height: 60px;
-  transition: all 0.3s ease;
-  margin: 0 auto;
-}
-
-.welcome,
-.location,
-.location .change-location {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.location {
-  display: flex;
-  align-items: center;
-  color: #03081F;
-}
-
-.location .location-icon {
-  margin-right: 14px;
-  padding: 23px 0;
-}
-
-.location .change-location {
-  color: #FFD95E;
-  font-size: 1.4rem;
-  padding-left: 15px;
-  text-decoration: underline;
-}
-
-/* Cart block */
-.cart {
-  display: flex;
-  align-items: center;
-  max-width: 378px;
-  height: 100%;
-  padding: 0 8px 0 20px;
-  background-color: #423C3C;
-  color: #FFF;
-  border-radius: 0 0 12px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  gap: 10px;
-  width: 100%; 
-}
-
-.cart-item,
-.cash {
-  flex: 1;
-  text-align: center;
-}
-
-.cash {
-  font-weight: 500;
-  font-size: 1.6rem;
-}
-
-.dropdown-btn {
-  background-color: #423c3c;
-  color: #fff;
-  transition: color 0.3s ease;
-}
-
-.dropdown-btn:hover {
-  color: #FFD95E;
-  border-radius: 0 0 12px 0;
-  transition: all 0.3s ease;
-}
 
 /*========================= 
  5. Header/Navigation
@@ -306,6 +225,7 @@ a {
 =========================*/
 .custom-hero-banner {
   margin: 24px auto;
+  
   max-width: 1528px;
   width: 95%;
   background: #f5ffc5;
@@ -486,7 +406,8 @@ a {
 
 .features-section {
   margin: 24px auto;
-  width: 1200px;
+  max-width: 1200px;
+  width: 100%;
   background: #fff;
   border-radius: 24px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.10);
@@ -592,56 +513,7 @@ a {
   color: #ffd95e;
 }
 
-/*========================= 
- 9. Popular Restaurants
-=========================*/
-.popular-restaurants {
-  padding: 40px 0;
-  background-color: #fff;
-}
 
-.section-title {
-  font-size: 2.4rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  color: #000;
-}
-
-.restaurants-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 24px;
-}
-
-.restaurant-card {
-  background: #fbfbfb;
-  border-radius: 16px;
-  overflow: hidden;
-  text-align: center;
-  padding: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.restaurant-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.restaurant-card img {
-  width: 100%;
-  height: 100px;
-  object-fit: contain;
-  margin-bottom: 12px;
-}
-
-.restaurant-card p {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #ffd95e;
-  margin: 0;
-}
 /*========================= 
  10. Suggestion Section
 =========================*/
@@ -766,6 +638,7 @@ a {
   width: 100%;
   justify-content: center;
   align-items: stretch;
+  
 }
 
 .faq-card {
@@ -838,55 +711,65 @@ a {
   margin-top: 1.5rem;
 }
 
-/*========================= 
- 11. Statistics Section
-=========================*/
-.statistics {
-  background: #ffd95e;
-  border-radius: 32px;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1528px;
-  margin: 0 auto 45px;
+@media (max-width: 900px) {
+  .faq-cards-row {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    
+
+  }
+  .faq-answers{
+    width: 50px;
+    height: 50px;
+  }
+
+  .faq-card {
+    width: 90%;
+    font-size: 1.3rem;
+    padding: 10px;
+  }
+  .faq-card h3 {
+    font-size: 1.2rem;
+  }
+  .faq-card p {
+    font-size: 1rem;
+  }
+  .faq-card img {
+    width: 40px;
+  }
+  .about-us{
+    height: 680px;
+  }
+  
+}
+@media (max-width: 480px) {
+  .faq-cards-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .faq-card {
+    width: 98%;
+    font-size: 1.05rem;
+    padding: 6px;
+  }
+  .faq-card h3 {
+    font-size: 1rem;
+  }
+  .faq-card p {
+    font-size: 0.9rem;
+  }
+  .faq-card img {
+    width: 28px;
+  }
 }
 
-.stats-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
-}
 
-.stat-item {
-  text-align: center;
-  color: #fff;
-}
-
-.stat-item h3 {
-  font-size: 55px;
-  font-weight: 300;
-  line-height: 38px;
-  margin-bottom: 8px;
-}
-
-.stat-item p {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 38px;
-}
-
-.divider {
-  width: 2px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.3);
-}
 /*========================= 
  12. Footer
 =========================*/
+
 .footer {
   width: 100%;  
   background-color: #222;
@@ -910,6 +793,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
 }
 
 /* Top Section */
@@ -928,6 +812,9 @@ a {
   height: auto;
   flex-shrink: 0;
   aspect-ratio: 190/219;
+  display: flex;
+  flex-direction:  column;
+  align-items: flex-start; /* Always left */
 }
 
 .footer-logo img {
@@ -945,6 +832,8 @@ a {
 .footer-subscribe {
   flex: 1;
   min-width: 250px;
+  position: relative;
+  
 }
 
 .footer-subscribe h3 {
@@ -957,7 +846,8 @@ a {
   gap: 10px;
   margin-bottom: 12px;
   justify-content: flex-start;
-  width: 900px;
+  max-width: 900px;
+  width: 100%;  
 }
 
 .subscribe-form input {
@@ -979,6 +869,7 @@ a {
   font-weight: bold;
   font-size: 1.5rem;
   cursor: pointer;
+  
 }
 
 .subscribe-note {
@@ -1173,17 +1064,41 @@ body.modal-open {
 /*========================= 
  13. Responsive Styles
 =========================*/
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 950px) {
+  .footer {
+    height: auto;
+    padding: 32px 0;
+  }
+
   .footer-top {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
+    gap:24px;
+  }
+  .footer-logo {
+    width: 120px; /* Smaller logo */
+    align-items: flex-start; /* Always left */
+    
   }
   
   .footer-middle {
     flex-direction: column;
     align-items: center;
   }
+  .footer-subscribe{
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 16px;
+  }
+  
+  
+  .subscribe-form button {
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 10px 8px;
+    width: 113.63px;
+  } 
 }
 /*========================= 
  14. Menu
@@ -1223,6 +1138,7 @@ body.modal-open {
     color: #666;
     font-size: 1rem;
     margin-bottom: 15px;
+    margin-top: 10px;
 }
 .menu-card-price {
     font-size: 1.2rem;
@@ -1257,13 +1173,21 @@ body.modal-open {
   
 }
 
-
+@media (max-width: 900px) {
+  .menu-section {
+    
+    margin-top: 100px;
+  }
+}
 /*========================= 
  15. Place Order
 =========================*/
 
 
-/* Category */
+
+/*========================= 
+ 16. Category
+=========================*/
 
 .category-sidebar {
   position: sticky;
@@ -1298,26 +1222,12 @@ body.modal-open {
   color: #fff;
   font-weight: 600;
 }
-/* .category-btn.active::after {
-  content: '';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 20px;
-  background-color: #080702;
-  border-radius: 3px;
-} */
+
 .category-btn:focus {
   outline: 2px solid #ffd95e;
   outline-offset: 2px;
 }
-.menu-content {
-  
-  flex: 1;
- 
-}
+
 .btn-order-now {
   background: #ffd95e;
   border: none;
@@ -1355,20 +1265,17 @@ body.modal-open {
     font-size: 1.4rem;
     padding: 8px 15px;
   }
-  /* .menu-content {
-    padding-left: 0;
-    column-gap: normal;
-  } */
+  
 }
 
-/* Icon Cart */
+/*========================= 
+ 17. Icon Cart
+=========================*/
 
 header .icon-cart{
     position: relative;
     
-    
 }
-
 header .icon-cart span{
     display: flex;
     width: 20px;
@@ -1384,7 +1291,9 @@ header .icon-cart span{
     
 }
 
-
+/*========================= 
+ 18. Cart Tab
+=========================*/
 .cartTab{
     width: 400px;
     height: 500px;
@@ -1399,15 +1308,12 @@ header .icon-cart span{
     
     
 }
+/* When the icon is click, the it toggles the body with the class showCart */
 body.showCart .cartTab{
-    /* inset: 0 0 0 auto; */
     right: 0;
-
 }
 
-/* body.showCart .container2{
-    transform: translateX(-250px);
-} */
+
 .cartTab h1{
     padding: 20px;
     margin: 0;
@@ -1464,15 +1370,9 @@ body.showCart .cartTab{
     overflow: auto;
 }
 
-/* Cart */
-
-.cart-section {
-  padding: 50px 0;
-  margin-top: 85px;
-  background: #fff8e1;
-}
-
-/* Suggestions */
+/*========================= 
+ 19. Suggestion Section
+=========================*/
 .suggestion-card {
     transition: transform 0.3s ease;
     border: none;
@@ -1554,13 +1454,7 @@ body.showCart .cartTab{
   background-color: #ffffff;
 }
 
-@media (max-width: 900px) {
-  .faq-cards-row {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
-}
+
 
 /*========================= 
  Profile Page Styles
@@ -1655,12 +1549,6 @@ body.showCart .cartTab{
         font-size: 2rem;
     }
 }
-
-.main {
-    margin-top: 100px;
-}
-
-
 
 form.profile-form input.form-control {
     font-size: 1.65rem ;
