@@ -30,12 +30,14 @@ const itemModel = require('../models/itemModel');
             // Instantiate itemModel and call the additem method
             const ItemModel = new itemModel();
             const result = await ItemModel.additem(itemData);
-
+            req.io.emit('newItem', result);
             // Respond with success and return the new item's ID
-            return res.status(201).json({
-                message: 'Item added successfully',
-                itemId: result.insertId
-            });
+            // return res.status(201).json({
+            //     message: 'Item added successfully',
+            //     itemId: result.insertId
+            // });
+            res.redirect('/item/create');
+           
         } catch (error) {
             // Log and handle any errors
             console.error('Error in addItem controller:', error);

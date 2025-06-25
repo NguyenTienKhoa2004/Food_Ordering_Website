@@ -2,10 +2,13 @@ const express = require('express');
 const session = require('express-session');
 const morgan = require('morgan');
 const path = require('path');
+const http = require('http'); // Add http module
+const socketIO = require('socket.io');
+const app = express();
+const server = http.createServer(app); // Create HTTP server
+const io = socketIO(server);
 const methodOverride = require('method-override');
 const exphbs = require('express-handlebars');
-const app = express();
-
 const port = 3000;
 const route = require('./routes/index');
 
@@ -49,15 +52,14 @@ app.set('views', path.join(__dirname, 'resources/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware to determine user role (example)
+app.use((req, res, next) => {
+  req.io = io; // Attach io to req object
+  next();
+});
 
 route(app);
 
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
 
-
-
-app.listen(port, () => {    
+server.listen(port, () => {    
   console.log(`Example app listening at http://localhost:${port}`);
 });

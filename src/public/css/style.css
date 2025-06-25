@@ -113,6 +113,7 @@ a {
 =========================*/
 .header {
   width: 100%;
+  
   left: 0;
   right: 0;
   margin: 0;
@@ -121,7 +122,7 @@ a {
   z-index: 1000;
   background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .header .body {
@@ -183,7 +184,7 @@ a {
 
 /* Logo and Login */
 .logo {
-  width: 80px;
+  width: 100px;
   height: auto;
 }
 
@@ -1305,12 +1306,13 @@ header .icon-cart span{
     grid-template-rows: 70px 1fr 70px;
     transition: .5s;
     z-index: 1000;
+    border-radius: 20px;
     
     
 }
 /* When the icon is click, the it toggles the body with the class showCart */
 body.showCart .cartTab{
-    right: 0;
+    right: 15px;
 }
 
 
@@ -1331,9 +1333,11 @@ body.showCart .cartTab{
     font-family: Poppins;
     font-weight: 500;
     cursor: pointer;
+    border-radius:20px ;
 }
 .cartTab .btn .close{
     background-color: #eee;
+    margin-right: 5px;
 }
 
 .cartTab .listCart .item img{
@@ -1464,7 +1468,7 @@ body.showCart .cartTab{
 .profile-container {
   max-width: 1528px;
   margin: 50px auto;
-  padding: 75px;
+  padding: 55px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.04);
@@ -1559,4 +1563,31 @@ form.profile-form input.form-control {
 
 .profile-columns-gap {
     column-gap: 10px;
+}
+
+
+/* Order Detail Modal */
+
+.order-details-modal {
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px 20px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .order-details-modal {
+  transform: translateY(0);
+}
+
+.order-details-modal h2 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #ffd95e; 
+  font-weight: 600;
 }

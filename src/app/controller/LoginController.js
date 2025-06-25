@@ -42,6 +42,50 @@ class LoginController {
         }
     }
 
+    
+//     async authentication(req, res) {
+//     try {
+//         // Extract username and password from request body
+//         const { username, password } = req.body;
+
+//         // Validate input
+//         if (!username || !password) {
+//             return res.status(400).json({ error: 'Username and password are required' });
+//         }
+
+//         // Check user credentials
+//         const user = await UserModel.findUserByCredentials(username, password);
+//         if (!user) {
+//             return res.status(401).json({ error: 'Invalid username or password' });
+//         }
+
+//         // Store user details in session
+//         req.session.user = {
+//             id: user.id,
+//             username: user.username,
+//             isAdmin: user.isAdmin
+//         };
+//         console.log('User logged in:', req.session.user);
+
+//         // Return API-friendly response
+//         res.status(200).json({
+//             message: 'Login successful',
+//             user: {
+//                 id: user.id,
+//                 username: user.username,
+//                 isAdmin: user.isAdmin
+//             },
+//             session: 'Session cookie (connect.sid) set for authenticated requests'
+//         });
+//     } catch (error) {
+//         console.error('Login error:', error.message);
+//         if (error.code === 'ER_CON_COUNT_ERROR') {
+//             return res.status(500).json({ error: 'Database connection error' });
+//         }
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// }
+
     // Method to render the login page
     login(req, res) {
         // If the user is already logged in, redirect them based on their role

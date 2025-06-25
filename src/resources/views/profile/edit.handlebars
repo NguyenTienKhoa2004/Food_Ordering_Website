@@ -1,4 +1,5 @@
 <div class="profile-container">
+  
   <div class="profile-header">
     <h2>Profile</h2>
     <p>Update your personal details or password below.</p>
@@ -14,14 +15,14 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" value="{{user.username}}" readonly>
+            <input type="text" class="form-control" id="username" name="username" value="{{user.username}}">
           </div>
           <div class="col-md-6">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" class="form-control" id="email" name="email" value="{{user.email}}">
           </div>
         </div>
-        <div class="row mb-3">
+        {{!-- <div class="row mb-3">
           <div class="col-md-6">
             <label for="firstName" class="form-label">First Name</label>
             <input type="text" class="form-control" id="firstName" name="firstName" value="{{user.firstName}}">
@@ -30,7 +31,7 @@
             <label for="lastName" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="lastName" name="lastName" value="{{user.lastName}}">
           </div>
-        </div>
+        </div> --}}
         <div class="row mb-4">
           <div class="col-md-4">
             <label for="oldPassword" class="form-label">Old Password</label>
@@ -66,3 +67,4 @@
     </div>
   </form>
 </div>
+

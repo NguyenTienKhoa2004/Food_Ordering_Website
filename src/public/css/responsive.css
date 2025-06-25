@@ -29,6 +29,8 @@
   .hero-banner {
     height: auto;
     padding: 20px 0;
+    
+    
   }
   .hero-content {
     flex-direction: column;
@@ -67,8 +69,25 @@
     flex-direction: column;
     gap: 10px;
   }
+  
+
+}
+@media screen and (max-width: 1024px) {
+  .main {
+    margin-top: 130px;
+  }
 }
 
+@media screen and (max-width: 768px) {
+  .main {
+    margin-top: 200px;
+  }
+}
+@media screen and (max-width: 520px) {
+  .main {
+    margin-top: 230px;
+  }
+}
 /*=============== Tablet (769px to 1024px) ===============*/
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   .container,
@@ -83,11 +102,12 @@
   .nav ul {
     gap: 16px;
   }
-  
+ 
   /* Hero Banner: adjust padding and height */
   .hero-banner {
     height: auto;
     padding: 30px 0;
+    
   }
   .hero-content {
     flex-direction: column;

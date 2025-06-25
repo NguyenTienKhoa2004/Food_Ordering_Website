@@ -4,8 +4,7 @@ const orderController = require('../app/controller/OrderController');
 
 router.post('/', orderController.placeOrder);
 router.get('/track/:id', orderController.trackOrder);
-router.post('/:id/status', orderController.updateOrderStatus);
-router.post('/:id/cancel', orderController.CancelOrder);
+router.post('/:id/cancel', orderController.cancelOrder);
 router.get('/formOrder', orderController.showOrderForm);
 router.delete('/:id', orderController.deleteOrder);
 

@@ -7,6 +7,7 @@
       <div class="card-body">
           <h5 class="card-title">Customer: {{this.user_id}}</h5>
           <p class="card-text">
+              <strong>Product name:</strong> {{this.product_name}}<br>
               <strong>Date:</strong> {{this.created_at}}<br>
               <strong>Total:</strong> ${{this.total}}<br>
               <strong>Status:</strong> {{this.status}}
@@ -15,10 +16,43 @@
                   <input type="hidden" name="status" value="cancelled">
                   <button type="submit" class="btn btn-primary text-danger">Cancel Order</button>
           </form>
-          <a href="/order/track/{{this.id}}" class="btn btn-primary" >Details</a>
+          {{!-- <a href="/order/track/{{this.id}}" class="btn btn-primary" >Details</a> --}}
+          <button class ="btn order-details btn-primary" data-id="{{this.user_id}}"
+                data-product-name="{{this.product_name}}"
+                data-date="{{this.created_at}}"
+                data-total="{{this.total}}"
+                data-status="{{this.status}}"
+                data-street="{{this.street}}"
+                data-city="{{this.city}}"
+                data-postal="{{this.postal}}"
+                data-payment="{{this.payment_method}}"> Order Details </button>
           </div>
       </div>
   {{/each}}
+</div>
+
+{{!-- Order Details Modal --}}
+<div id="detailsModal" class=" modal-overlay">
+    <div class=" order-details-modal">
+        <div class="flex justify-between items-center mb-4">
+            <h2>Order Details</h2>
+            
+        </div>
+        <div class="modal-body">
+            <p><strong>Customer ID:</strong> <span id="modal-user-id"></span></p>
+            <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
+            <p><strong>Date:</strong> <span id="modal-date"></span></p>
+            <p><strong>Total:</strong> $<span id="modal-total"></span></p>
+            <p><strong>Status:</strong> <span id="modal-status"></span></p>
+            <p><strong>Street:</strong> <span id="modal-street"></span></p>
+            <p><strong>City:</strong> <span id="modal-city"></span></p>
+            <p><strong>Postal Code:</strong> <span id="modal-postal"></span></p>
+            <p><strong>Payment Method:</strong> <span id="modal-payment"></span></p>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <button id="closeModalBtn" class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
+        </div>
+    </div>
 </div>
 {{!--Confirm delete--}}
 <div id="delete-modal" class="modal" tabindex="-1">
@@ -43,27 +77,96 @@
 
 
 <script>
-    let recipient = null;
-    const exampleModal = document.getElementById('delete-modal');
-    const deleteForm = document.getElementById('delete-item-form');
-    const btnDeleteItem = document.getElementById('btn-delete-item');
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailsModal = document.getElementById('detailsModal');
+        const orderDetailsButtons = document.querySelectorAll('.order-details');
+        const closeModalBtn = document.getElementById('closeModal');
+        const closeModalBtnSecondary = document.getElementById('closeModalBtn');
 
-    if (exampleModal) {
-        exampleModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget;
-            recipient = button.getAttribute('data-id');
-        });
-    }
+        // Check if modal exists
+        if (!detailsModal) {
+            console.error('Modal element with ID detailsModal not found');
+            return;
+        }
 
-    if (btnDeleteItem) {
-        btnDeleteItem.onclick = function() {
-            if (recipient) {
-                // Set the form action to your order delete route
-                deleteForm.action = `/cart/${recipient}?_method=DELETE`;
-                deleteForm.submit();
+        // Function to open modal and populate data
+        function openDetailsModal(data) {
+            const userIdElement = document.getElementById('modal-user-id');
+            const product_nameElement = document.getElementById('modal-product-name');
+            const dateElement = document.getElementById('modal-date');
+            const totalElement = document.getElementById('modal-total');
+            const statusElement = document.getElementById('modal-status');
+            const streetElement = document.getElementById('modal-street');
+            const cityElement = document.getElementById('modal-city');  
+            const postalElement = document.getElementById('modal-postal');
+            const paymentElement = document.getElementById('modal-payment');
+
+            // Check if all modal elements exist
+            if (!userIdElement || !dateElement || !totalElement || !statusElement) {
+                console.error('One or more modal elements not found');
+                return;
             }
-        };
-    }
+
+            userIdElement.textContent = data.id;
+            product_nameElement.textContent = data.name;
+            dateElement.textContent = data.date;
+            totalElement.textContent = data.total;
+            statusElement.textContent = data.status;
+            streetElement.textContent = data.street;
+            cityElement.textContent = data.city;
+            postalElement.textContent = data.postal;
+            paymentElement.textContent = data.payment;
+            
+            detailsModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to close modal
+        function closeDetailsModal() {
+            detailsModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Attach event listeners to all order-details buttons
+        orderDetailsButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const data = {
+                    id: this.getAttribute('data-id'),
+                    name: this.getAttribute('data-product-name'),
+                    date: this.getAttribute('data-date'),
+                    total: this.getAttribute('data-total'),
+                    status: this.getAttribute('data-status'),
+                    street: this.getAttribute('data-street'),
+                    city: this.getAttribute('data-city'),   
+                    postal: this.getAttribute('data-postal'),
+                    payment: this.getAttribute('data-payment')
+                };
+                openDetailsModal(data);
+            });
+        });
+
+        // Event listener for close button (×)
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeDetailsModal);
+        } else {
+            console.warn('Close button with ID closeModal not found');
+        }
+
+        // Event listener for secondary close button (Close)
+        if (closeModalBtnSecondary) {
+            closeModalBtnSecondary.addEventListener('click', closeDetailsModal);
+        } else {
+            console.warn('Close button with ID closeModalBtn not found');
+        }
+
+        // Close modal when clicking outside
+        detailsModal.addEventListener('click', function(e) {
+            if (e.target === detailsModal) {
+                closeDetailsModal();
+            }
+        });
+    });
 </script>
 
 <style>
@@ -87,6 +190,28 @@
     font-weight: 600;
     margin-bottom: 1rem;
   }
+
+  .modal {
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .modal.active {
+      display: flex;
+      opacity: 1;
+  }
+  .modal-content {
+      width: 300px;
+      height: 300px;
+      overflow-y: auto;
+      transform: scale(0.8);
+      transition: transform 0.3s ease;
+  }
+  .modal.active .modal-content {
+      transform: scale(1);
+  }
+
+  
 
 
 </style>

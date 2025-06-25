@@ -12,7 +12,12 @@ ul.row {margin-top: 40px; margin-bottom: 30px;}
 body {
   background: #f3f3f3;
 }
+.order-section{
+  
+    padding: 50px 0;
+    margin-top :0px;
 
+}
 .track-order-container {
   max-width: 1528px;
   margin: 50px auto 50px auto;

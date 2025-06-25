@@ -1,4 +1,5 @@
 <div class="order-container">
+    <div class ="menu-section">
     <div class="row">
         <!-- Item List Section -->
         <div class="col-md-6 item-list">
@@ -34,15 +35,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Quantity -->
-                <div class="mb-4">
-                    <h4 class="form-section-title">Quantity</h4>
-                    <div class="quantity-selector">
-                        <button type="button" class="quantity-btn decrease" aria-label="Decrease quantity">-</button>
-                        <input type="number" class="quantity-input" name="quantity" value="1" min="1" aria-label="Quantity">
-                        <button type="button" class="quantity-btn increase" aria-label="Increase quantity">+</button>
-                    </div>
-                </div>
+    
+                
                 <!-- Payment Method -->
                 <div class="mb-4">
                     <h4 class="form-section-title">Payment Method</h4>
@@ -65,9 +59,10 @@
                 <input type="hidden" name="itemId" value="1">
                 <input type="hidden" name="cart" id="cart-data" />
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-order">Place Order</button>
+                <button type="submit" class="btn btn-order" >Place Order</button>
             </form>
         </div>
+      </div>
     </div>
   </div>
 
@@ -92,6 +87,8 @@
                 <img src="${item.image}" alt="${item.name}" class="item-image">
                 <div class="item-card-body">
                 <h5 class="item-title">${item.name}</h5>
+                
+                <p class="item-quantity">Quantity: ${item.quantity}</p>
                 <p class="item-price">${item.price}</p>
                 </div>
             `;

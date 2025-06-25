@@ -178,6 +178,45 @@ class homeController {
         });
     }
 }
+//     async menu(req, res) {
+//     try {
+//         // Fetch all items from the database
+//         const ItemModel = new itemModel();
+//         const items = await ItemModel.showitem();
+
+//         // If user is logged in, check if they are admin
+//         if (req.session.user) {
+//             if (req.session.user.isAdmin) {
+//                 return res.status(200).json({
+//                     redirect: '/admin',
+//                     message: 'Admin user detected, please use admin dashboard'
+//                 });
+//             }
+//             // Return menu data for logged-in user
+//             return res.status(200).json({
+//                 userType: 'authenticated',
+//                 items,
+//                 currentPath: req.originalUrl,
+//                 username: req.session.user.username,
+                
+//             });
+//         }
+
+//         // Return menu data for guests (not logged in)
+//         return res.status(200).json({
+//             userType: 'guest',
+//             items,
+//             currentPath: req.originalUrl,
+            
+//         });
+
+//     } catch (error) {
+//         console.error('Error in menu:', error);
+//         return res.status(500).json({
+//             error: 'An error occurred while loading the menu. Please try again later.'
+//         });
+//     }
+// }
 
     restaurant(req, res) {
         // Check if the user is logged in

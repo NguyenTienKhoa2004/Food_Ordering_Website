@@ -8,5 +8,7 @@ router.get('/stored/item', meController.storeditem);
 router.get('/order/list', meController.OrderList);
 router.get('/', meController.dashboard);
 router.post('/:id/toggle-admin', meController.toggleAdmin);
+router.post('/:id/status', meController.updateOrderStatus);
+router.post('/:id/done', meController.doneOrder);
 
 module.exports = router;

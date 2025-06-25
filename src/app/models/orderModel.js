@@ -3,51 +3,46 @@ const { getConnection } = require('../../db');
 
 class orderModel {
 
-    // Method to create a new order
-    createOrder(userId, items, address, payment) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const connection = await getConnection(); // Establish a database connection
-                await connection.beginTransaction(); // Start a transaction
-
-                // Calculate the total cost of the order
-                let total = 0;
-                for (const item of items) {
-                    // Fetch the price of each item from the database
-                    const [rows] = await connection.execute('SELECT price FROM items WHERE id = ?', [item.product_id]);
-                    if (rows.length === 0) {
-                        throw new Error(`Item ID ${item.product_id} not found`); // Throw an error if the item doesn't exist
-                    }
-                    total += rows[0].price * item.quantity; // Add the item's cost to the total
+    async createOrder(userId, items, address, payment) {
+        const connection = await getConnection();
+        try {
+            await connection.beginTransaction();
+            let total = 0;
+            for (const item of items) {
+                const [rows] = await connection.execute('SELECT price FROM items WHERE id = ?', [item.product_id]);
+                if (rows.length === 0) {
+                    throw new Error(`Item ID ${item.product_id} not found`);
                 }
-
-                // Insert the order into the orders table
-                const [orderResult] = await connection.execute(
-                    'INSERT INTO orders (user_id, total, status, street, city, postal, Payment) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                    [userId, total, 'pending',  address.street, address.city, address.postal, payment] // Default status is 'pending'
-                );
-                const orderId = orderResult.insertId; // Get the ID of the newly created order
-
-                // Insert each item into the order_items table
-                for (const item of items) {
-                    const [rows] = await connection.execute('SELECT price FROM items WHERE id = ?', [item.product_id]);
-                    await connection.execute(
-                        'INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (?, ?, ?, ?)',
-                        [orderId, item.product_id, item.quantity, rows[0].price]
-                    );
-                }
-
-                await connection.commit(); // Commit the transaction
-                await connection.end(); // Close the database connection
-                resolve({ orderId, total }); // Resolve the promise with the order ID and total cost
-            } catch (error) {
-                await connection.rollback(); // Roll back the transaction in case of an error
-                await connection.end(); // Close the database connection
-                console.error('Error creating order:', error); // Log the error
-                reject(error); // Reject the promise with the error
+                total += rows[0].price * item.quantity;
             }
-        });
-    }
+
+            // Concatenate item names for the product_name column
+            const productNames = items.map(item => item.name).join(', ');
+
+            const [orderResult] = await connection.execute(
+                'INSERT INTO orders (user_id, product_name, total, status, street, city, postal, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [userId, productNames || null, total, 'pending', address.street, address.city, address.postal, payment]
+            );
+            const orderId = orderResult.insertId;
+
+            for (const item of items) {
+                const [rows] = await connection.execute('SELECT price FROM items WHERE id = ?', [item.product_id]);
+                await connection.execute(
+                    'INSERT INTO order_items (order_id, item_id, quantity, price) VALUES (?, ?, ?, ?)',
+                    [orderId, item.product_id, item.quantity, rows[0].price]
+                );
+            }
+
+            await connection.commit();
+            await connection.end();
+            return { orderId, total };
+        } catch (error) {
+            await connection.rollback();
+            await connection.end();
+            console.error('Error creating order:', error);
+            throw error;
+        }
+}
 
     // Method to fetch the cart data for a specific user by their user ID
     showCartbyUserID(userId) {
@@ -166,6 +161,20 @@ class orderModel {
                 }
                 console.error('Error deleting order:', error);
                 reject(error);
+            }
+        });
+    }
+    markOrderAsDone(orderId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const connection = await getConnection(); // Establish a database connection
+                const sql = 'UPDATE orders SET status = ? WHERE id = ?'; // SQL query to update the order status
+                const [result] = await connection.execute(sql, ['done', orderId]); // Execute the query to mark the order as done
+                await connection.end(); // Close the database connection
+                resolve(result); // Resolve the promise with the result
+            } catch (error) {
+                console.error('Error marking order as done:', error); // Log the error
+                reject(error); // Reject the promise with the error
             }
         });
     }

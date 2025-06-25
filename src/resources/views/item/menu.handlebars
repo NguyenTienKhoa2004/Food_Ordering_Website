@@ -15,7 +15,7 @@
           </nav>
         </div>
         <!-- Menu Items -->
-        <div class="col-md-10 menu-content listProduct">
+        <div class="col-md-10 listProduct">
           <div class="row" id="menu-items">
             {{#each items}}
             <div class="col-lg-4 col-md-6 menu-card" data-category="{{this.category}}">
@@ -36,17 +36,35 @@
       </div>
     </div> 
   </section>
-
-  {{!-- <div class="cartTab">
-    <h1>Shopping Cart</h1>
-      <div class="listCart">
-        <div class="item">
-         
-        </div>
-      </div>
-      <div class="btn">
-        <button class="close">CLOSE</button>
-        <button class="checkOut" id="checkout-btn">CHECK Out</button>
-      </div>
-  </div> --}}
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // Listen for new item events
+  socket.on('newItem', (newItem) => {
+    const menuItems = document.getElementById('menu-items');
+    const currentCategory = document.querySelector('.category-btn[aria-selected="true"]').dataset.category;
+
+    // Only append if the item matches the current category or 'all' is selected
+    if (currentCategory === 'all' || currentCategory === newItem.category) {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'col-lg-4 col-md-6 menu-card';
+      itemDiv.dataset.category = newItem.category;
+      itemDiv.innerHTML = `
+        <a href="/menu/${newItem.slug}">
+          <img src="${newItem.image}" alt="${newItem.name}">
+        </a>
+        <div class="menu-card-body">
+          <h5 class="menu-card-title">${newItem.name}</h5>
+          <p class="menu-card-text">${newItem.description}</p>
+          <p class="menu-card-price">$${newItem.price}</p>
+          <a class="btn btn-order-now" data-id="${newItem.id}"
+            data-name="${newItem.name}" data-image="${newItem.image}" data-price="${newItem.price}">Chọn món</a>
+        </div>
+      `;
+      menuItems.appendChild(itemDiv);
+    }
+  });
+</script>

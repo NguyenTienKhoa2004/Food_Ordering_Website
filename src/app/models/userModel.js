@@ -62,6 +62,26 @@ class UserModel {
         await connection.execute('UPDATE users SET isAdmin = ? WHERE id = ?', [isAdmin ? 1 : 0, id]);
         await connection.end();
     }
+    static async updateUsername(id, username) {
+        const connection = await getConnection();
+        await connection.execute('UPDATE users SET username = ? WHERE id = ?', [username, id]);
+        await connection.end();
+    }
+
+    static async checkPassword(id, password) {
+        const connection = await getConnection();
+        const [rows] = await connection.execute('SELECT password FROM users WHERE id = ?', [id]);
+        await connection.end();
+        // Compare hashed passwords as appropriate for your app
+        return rows[0] && rows[0].password === password;
+    }
+
+    static async updatePassword(id, newPassword) {
+        const connection = await getConnection();
+        // Hash newPassword before saving in production!
+        await connection.execute('UPDATE users SET password = ? WHERE id = ?', [newPassword, id]);
+        await connection.end();
+    }
 }
 
 // Exporting the UserModel class for use in other parts of the application

@@ -41,7 +41,7 @@
     <!-- Item Management -->
     <section class="my-5">
         <h2>Manage Items</h2>
-        <a href="/items/new" class="btn btn-primary mb-3">Add New Item</a>
+        <a href="/item/create" class="btn btn-primary mb-3">Add New Item</a>
         <div class="row">
             {{#each items}}
             <div class="col-md-4 mb-4">
@@ -67,7 +67,7 @@
     <!-- Exclusive Deals Management -->
     <section class="my-5">
         <h2>Manage Exclusive Deals</h2>
-        <a href="/items/new" class="btn btn-primary mb-3">Add New Exclusive Deals</a>
+        <a href="/exclusiveDeals/create" class="btn btn-primary mb-3">Add New Exclusive Deals</a>
         <div class="row">
             {{#each exclusiveDeals}}
             <div class="col-md-4 mb-4">
@@ -88,7 +88,7 @@
     </section>
 
     <!-- Order Management -->
-    <section class="my-5">
+    {{!-- <section class="my-5">
         <h2>Manage Orders</h2>
         <table class="table table-striped">
             <thead>
@@ -108,7 +108,7 @@
                     <td>${{this.total}}</td>
                     <td>{{this.status}}</td>
                     <td>
-                        <form action="/order/{{this.id}}/status" method="POST" class="d-inline">
+                        <form action="/me/{{this.id}}/status" method="POST" class="d-inline">
                             <select name="status" onchange="this.form.submit()">
                                 <option value="pending" {{#if (eq this.status 'pending')}}selected{{/if}}>Pending</option>
                                 <option value="confirmed" {{#if (eq this.status 'confirmed')}}selected{{/if}}>Confirmed</option>
@@ -116,6 +116,19 @@
                             </select>
                         </form>
                         <a href="/order/{{this.id}}" class="btn btn-info btn-sm">Details</a>
+                        <button class ="btn order-details btn-primary" data-id="{{this.user_id}}"
+                            data-product-name="{{this.product_name}}"
+                            data-date="{{this.created_at}}"
+                            data-total="{{this.total}}"
+                            data-status="{{this.status}}"
+                            data-street="{{this.street}}"
+                            data-city="{{this.city}}"
+                            data-postal="{{this.postal}}"
+                            data-payment="{{this.payment_method}}"> Order Details 
+                        </button>
+                        <form action="/me/{{this.id}}/done"method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Done</button>
+                        </form>
                         <form action="/order/{{this.id}}?_method=DELETE" method="POST" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
@@ -124,7 +137,101 @@
                 {{/each}}
             </tbody>
         </table>
-    </section>
+    </section> --}}
+    <section class="my-5">
+    <h2>Manage Orders</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.username}}</td>
+                <td>${{this.total}}</td>
+                <td>{{this.status}}</td>
+                <td>
+                    <form action="/me/{{this.id}}/status" method="POST" class="d-inline">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="pending" {{#if (eq this.status 'pending')}}selected{{/if}}>Pending</option>
+                            <option value="confirmed" {{#if (eq this.status 'confirmed')}}selected{{/if}}>Confirmed</option>
+                            <option value="cancelled" {{#if (eq this.status 'cancelled')}}selected{{/if}}>Cancelled</option>
+                        </select>
+                    </form>
+                    <button class="btn order-details btn-primary" 
+                            data-id="{{this.user_id}}"
+                            data-product-name="{{this.product_name}}"
+                            data-date="{{this.created_at}}"
+                            data-total="{{this.total}}"
+                            data-status="{{this.status}}"
+                            data-street="{{this.street}}"
+                            data-city="{{this.city}}"
+                            data-postal="{{this.postal}}"
+                            data-payment="{{this.payment_method}}">Order Details</button>
+                    <form action="/me/{{this.id}}/done" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Done</button>
+                    </form>
+                    <form action="/order/{{this.id}}?_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</section>
+    {{!-- Order Details Modal --}}
+    {{!-- <div id="detailsModal" class=" modal-overlay">
+    <div class=" order-details-modal">
+        <div class="flex justify-between items-center mb-4">
+            <h2>Order Details</h2>
+            
+        </div>
+        <div class="modal-body">
+            <p><strong>Customer ID:</strong> <span id="modal-user-id"></span></p>
+            <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
+            <p><strong>Date:</strong> <span id="modal-date"></span></p>
+            <p><strong>Total:</strong> $<span id="modal-total"></span></p>
+            <p><strong>Status:</strong> <span id="modal-status"></span></p>
+            <p><strong>Street:</strong> <span id="modal-street"></span></p>
+            <p><strong>City:</strong> <span id="modal-city"></span></p>
+            <p><strong>Postal Code:</strong> <span id="modal-postal"></span></p>
+            <p><strong>Payment Method:</strong> <span id="modal-payment"></span></p>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <button id="closeModalBtn" class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
+        </div>
+    </div>
+    </div> --}}
+    <div id="detailsModal" class="modal-overlay">
+    <div class="order-details-modal">
+        <div class="flex justify-between items-center mb-4">
+            <h2>Order Details</h2>
+            
+        </div>
+        <div class="modal-body">
+            <p><strong>Customer ID:</strong> <span id="modal-user-id"></span></p>
+            <p><strong>Product Name:</strong> <span id="modal-product-name"></span></p>
+            <p><strong>Date:</strong> <span id="modal-date"></span></p>
+            <p><strong>Total:</strong> $<span id="modal-total"></span></p>
+            <p><strong>Status:</strong> <span id="modal-status"></span></p>
+            <p><strong>Street:</strong> <span id="modal-street"></span></p>
+            <p><strong>City:</strong> <span id="modal-city"></span></p>
+            <p><strong>Postal Code:</strong> <span id="modal-postal"></span></p>
+            <p><strong>Payment Method:</strong> <span id="modal-payment"></span></p>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <button id="closeModalBtn" class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
+        </div>
+    </div>
+</div>
 
     <!-- User Management -->
     <section class="my-5">
@@ -158,22 +265,7 @@
         </table>
     </section>
 
-    {{!-- <!-- Settings -->
-    <section class="my-5">
-        <h2>Settings</h2>
-        <form action="/settings" method="POST" class="card p-4">
-            <div class="mb-3">
-                <label for="siteName" class="form-label">Site Name</label>
-                <input type="text" class="form-control" id="siteName" name="siteName" value="{{settings.siteName}}">
-            </div>
-            <div class="mb-3">
-                <label for="contactEmail" class="form-label">Contact Email</label>
-                <input type="email" class="form-control" id="contactEmail" name="contactEmail" value="{{settings.contactEmail}}">
-            </div>
-            <button type="submit" class="btn btn-primary">Save Settings</button>
-        </form>
-    </section>
-</div> --}}
+    
 <div id="delete-modal" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -197,29 +289,153 @@
 <!-- Handlebars Helper for eq -->
 <script>
 
+document.addEventListener('DOMContentLoaded', function() {
+    const detailsModal = document.getElementById('detailsModal');
+    const orderDetailsButtons = document.querySelectorAll('.order-details');
+    const closeModalBtn = document.getElementById('closeModal'); // Fixed ID
+    const closeModalBtnSecondary = document.getElementById('closeModalBtn');
 
-document.addEventListener('DOMContentLoaded', function () {
-    let recipient = null;
-    const deleteModal = document.getElementById('delete-modal');
-    const deleteForm = document.getElementById('delete-item-form');
-    const btnDeleteItem = document.getElementById('btn-delete-item');
+    if (!detailsModal) {
+        console.error('Modal element with ID detailsModal not found');
+        return;
+    }
 
-    // Listen for modal show event
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        recipient = button.getAttribute('data-item-id');
+    function openDetailsModal(data) {
+        document.getElementById('modal-user-id').textContent = data.id || 'N/A';
+        document.getElementById('modal-product-name').textContent = data.name || 'N/A';
+        document.getElementById('modal-date').textContent = data.date || 'N/A';
+        document.getElementById('modal-total').textContent = data.total || '0';
+        document.getElementById('modal-status').textContent = data.status || 'N/A';
+        document.getElementById('modal-street').textContent = data.street || 'N/A';
+        document.getElementById('modal-city').textContent = data.city || 'N/A';
+        document.getElementById('modal-postal').textContent = data.postal || 'N/A';
+        document.getElementById('modal-payment').textContent = data.payment || 'N/A';
+
+        detailsModal.style.display = 'flex'; // Show modal
+        detailsModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetailsModal() {
+        detailsModal.classList.remove('active');
+        detailsModal.style.display = 'none'; // Hide modal
+        document.body.style.overflow = '';
+    }
+
+    orderDetailsButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const data = {
+                id: this.getAttribute('data-id'),
+                name: this.getAttribute('data-product-name'),
+                date: this.getAttribute('data-date'),
+                total: this.getAttribute('data-total'),
+                status: this.getAttribute('data-status'),
+                street: this.getAttribute('data-street'),
+                city: this.getAttribute('data-city'),
+                postal: this.getAttribute('data-postal'),
+                payment: this.getAttribute('data-payment')
+            };
+            openDetailsModal(data);
+        });
     });
 
-    // When delete is confirmed
-    btnDeleteItem.addEventListener('click', function () {
-        if (recipient) {
-            deleteForm.action = `/item/${recipient}?_method=DELETE`;
-            deleteForm.submit();
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeDetailsModal);
+    } else {
+        console.warn('Close button with ID closeModal not found');
+    }
+
+    if (closeModalBtnSecondary) {
+        closeModalBtnSecondary.addEventListener('click', closeDetailsModal);
+    } else {
+        console.warn('Close button with ID closeModalBtn not found');
+    }
+
+    detailsModal.addEventListener('click', function(e) {
+        if (e.target === detailsModal) {
+            closeDetailsModal();
         }
     });
 });
-Handlebars.registerHelper('eq', function (a, b) {
+
+// Handlebars Helper for eq (already included)
+Handlebars.registerHelper('eq', function(a, b) {
     return a === b;
 });
-
 </script>
+
+<style>
+  .modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex; /* Show when active */
+    opacity: 1;
+}
+
+.order-details-modal {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px; /* Increased for better readability */
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .order-details-modal {
+    transform: scale(1);
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-body p {
+    margin: 0.5rem 0;
+}
+
+.order-card {
+    margin-bottom: 1.6rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    line-height: 1.7;
+}
+
+.card-body {
+    padding: 1.6rem;
+}
+
+.card-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+  
+
+
+</style>
+
+
+
+
+
+
+

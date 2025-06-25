@@ -1,6 +1,7 @@
 const itemModel = require('../models/itemModel');
 
 class MenuController{
+    
     async menubyCategory(req, res) {
         try {
             // Check if the user is logged in

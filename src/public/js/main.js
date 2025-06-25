@@ -560,144 +560,55 @@ if (orderForm) {
     }
   });
 }
+/*========================= 
+   Modal Order Details
+=========================*/
+    // const detailsModal = document.getElementById('detailsModal');
+    // const orderDetailsBtn = document.querySelectorAll('.order-details');
+    // const closeModalBtn = document.getElementById('closeModal');
 
-// Cart-Tab
-
-// let listProductHTML = document.querySelector('.listProduct');
-// let listCartHTML = document.querySelector('.listCart');
-// let iconCart = document.querySelector('.icon-cart');
-// let iconCartSpan = document.querySelector('.icon-cart span');
-// let body = document.querySelector('body');
-// let closeCart = document.querySelector('.close');
-// let checkoutBtn = document.getElementById('checkout-btn');
-// let cart = [];
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     if (localStorage.getItem('cart')) {
-//         cart = JSON.parse(localStorage.getItem('cart'));
-//         addCartToHTML(); // Render cart items
-//     }
+    
+    // // Function to open login modal
    
-// });
+    // // Function to close login modal
+    // function closeDetailsModal() {
+    //     detailsModal.classList.remove('active');
+    //     document.body.style.overflow = ''; // Restore scrolling
+    // }
+    
+    // // Event listeners
+    // if (orderDetailsBtn) {
+    //     orderDetailsBtn.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         const data = {
+    //         id: this.getAttribute('data-id'),
+    //         date: this.getAttribute('data-date'),
+    //         total: this.getAttribute('data-total'),
+    //         status: this.getAttribute('data-status')
+            
+    //         };
+            
+    //         openDetailsModal(data);
+    //     });
+    // }
 
-// if (checkoutBtn) {
-//     checkoutBtn.addEventListener('click', function() {
+    // if (closeModalBtn) {
+    //     closeModalBtn.addEventListener('click', closeDetailsModal);
+    // }
+
+    // function openDetailsModal(data) {
+
+    //     document.getElementById('modal-user-id').textContent = data.id;
+    //     document.getElementById('modal-date').textContent = data.date;
+    //     document.getElementById('modal-total').textContent = data.total;
+    //     document.getElementById('modal-status').textContent = data.status;
         
-//         // Optionally, you can validate cart here
-//         if (cart.length === 0) {
-//             alert('Your cart is empty!');
-//             return;
-//         }
-//         // Cart is already in localStorage, just redirect
-//         window.location.href = '/item/api/order';
-//     });
-// }
-// let listProducts = [];
-// iconCart.addEventListener("click", () => {
-//     body.classList.toggle('showCart');
-// });
-
-// closeCart.addEventListener('click', () => {
-//     body.classList.toggle('showCart');
-// });
-
-
-
-// listProductHTML.addEventListener('click', (event) => {
-//         let positionClick = event.target;
-//         if(positionClick.classList.contains('btn-order-now')){
-//             event.preventDefault();
-//             let id = positionClick.dataset.id;
-//             let name = positionClick.dataset.name;
-//             let image = positionClick.dataset.image;
-//             let price = parseFloat(positionClick.dataset.price);
-//             addToCart(id, name, image, price);
-            
-//         }
-//     })
-
-// const addToCart = (product_id, name, image, price) => {
-//     let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id);
-//     if(cart.length <= 0){
-//         cart = [{
-//             product_id: product_id,
-//             name: name,
-//             image: image,
-//             price: price,
-//             quantity: 1
-//         }];
-//     }else if(positionThisProductInCart < 0){
-//         cart.push({
-//             product_id: product_id,
-//             name: name,
-//             image: image,
-//             price: price,
-//             quantity: 1
-//         });
-//     }else{
-//         cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
-//     }
-//     addCartToHTML();
-//     addCartToMemory();
-// }
-// const addCartToMemory = () => {
-//     localStorage.setItem('cart', JSON.stringify(cart));
-// }
-// const addCartToHTML = () => {
-//     if (!listCartHTML || !iconCartSpan) return; 
-//     listCartHTML.innerHTML = '';
-//     let totalQuantity = 0;
-//     if(cart.length > 0){
-//         cart.forEach(item => {
-//             totalQuantity = totalQuantity +  item.quantity;
-//             let newItem = document.createElement('div');
-//             newItem.classList.add('item');
-//             newItem.dataset.id = item.product_id;
-
-            
-//             listCartHTML.appendChild(newItem);
-//             newItem.innerHTML = `
-           
-//             <div class="image">
-//                     <img src="${item.image}">
-//                 </div>
-//                 <div class="name">
-//                 ${item.name}
-//                 </div>
-//                 <div class="totalPrice">$${item.price * item.quantity}</div>
-//                 <div class="quantity">
-//                     <span class="minus"><</span>
-//                     <span>${item.quantity}</span>
-//                     <span class="plus">></span>
-//                 </div>
-//             `;
-//         })
-//     }
-//     iconCartSpan.innerText = totalQuantity;
-// }
-// listCartHTML.addEventListener('click', (event) => {
-//     let positionClick = event.target;
-//     if(positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-//         event.preventDefault();
-//         let id = positionClick.closest('.item').dataset.id;
-//         let positionThisProductInCart = cart.findIndex((value) => value.product_id == id);
-//         if(positionThisProductInCart >= 0) {
-//             if(positionClick.classList.contains('minus')) {
-//                 if(cart[positionThisProductInCart].quantity > 1) {
-//                     cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity - 1;
-//                 } else {
-//                     cart.splice(positionThisProductInCart, 1);
-//                 }
-//             } else if(positionClick.classList.contains('plus')) {
-//                 cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
-//             }
-//             addCartToHTML();
-//             addCartToMemory();
-//         }
-//     }
-
-
-// })
+    //     detailsModal.classList.add('active');
+    //     document.body.style.overflow = 'hidden';
+    // }
+    
+    // Close modal when clicking outside of it
+    
 
 
 
