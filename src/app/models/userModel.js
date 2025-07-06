@@ -1,27 +1,22 @@
-// Importing the database connection utility
 const { getConnection } = require('../../db');
+const bcrypt = require('bcrypt');
+
 
 class UserModel {
 
     // Static method to find a user by their credentials (username and password)
-    static async findUserByCredentials(username, password) {
-        try {
-            const connection = await getConnection(); // Establish a database connection
-
-            // SQL query to find a user with the given username and password
-            const [rows] = await connection.execute(
-                'SELECT id, username, isAdmin FROM users WHERE username = ? AND password = ?',
-                [username, password]
-            );
-
-            await connection.end(); // Close the database connection
-
-            // Return the user if found, otherwise return null
-            return rows.length > 0 ? rows[0] : null;
-        } catch (error) {
-            // Throw a custom error if a database error occurs
-            throw new Error('Database error during user lookup');
+     static async findUserByCredentials(username, password) {
+        const connection = await getConnection();
+        const [rows] = await connection.execute(
+            'SELECT * FROM users WHERE username = ?',
+            [username]
+        );
+        await connection.end();
+        const user = rows[0];
+        if (user && await bcrypt.compare(password, user.password)) {
+            return user;
         }
+        return null;
     }
 
     // Method to fetch all users from the database
@@ -47,8 +42,9 @@ class UserModel {
     // Method to create a new user in the database
     static async createUser(username, email, password) {
         const connection = await getConnection();
+        const hashedPassword = await bcrypt.hash(password, 10); // Hash password
         const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-        await connection.execute(sql, [username, email, password]);
+        await connection.execute(sql, [username, email, hashedPassword]);
         await connection.end();
     }
     static async findById(id) {
@@ -72,14 +68,14 @@ class UserModel {
         const connection = await getConnection();
         const [rows] = await connection.execute('SELECT password FROM users WHERE id = ?', [id]);
         await connection.end();
-        // Compare hashed passwords as appropriate for your app
-        return rows[0] && rows[0].password === password;
+        if (!rows[0]) return false;
+        return await bcrypt.compare(password, rows[0].password);
     }
 
     static async updatePassword(id, newPassword) {
         const connection = await getConnection();
-        // Hash newPassword before saving in production!
-        await connection.execute('UPDATE users SET password = ? WHERE id = ?', [newPassword, id]);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await connection.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
         await connection.end();
     }
 }

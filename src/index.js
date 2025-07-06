@@ -1,20 +1,22 @@
+require('dotenv').config();
+
 const express = require('express');
 const session = require('express-session');
 const morgan = require('morgan');
 const path = require('path');
 const http = require('http'); // Add http module
 const socketIO = require('socket.io');
+const cookieParser = require('cookie-parser'); // Add cookie-parser
+const methodOverride = require('method-override');
+const exphbs = require('express-handlebars');
 const app = express();
 const server = http.createServer(app); // Create HTTP server
 const io = socketIO(server);
-const methodOverride = require('method-override');
-const exphbs = require('express-handlebars');
 const port = 3000;
 const route = require('./routes/index');
 
-require('dotenv').config();
 
-
+app.use(cookieParser()); // Add cookie-parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
@@ -22,7 +24,13 @@ app.use(morgan('tiny'));
 app.use(session({
   secret: 'x7k9mPqW3zT2rY8nJ5vL0bF6tH', // Replace with a secure key
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // only over HTTPS
+    httpOnly: true, // prevents JS access to cookie
+    sameSite: 'lax', // or 'strict' for more security
+    maxAge: 1000 * 60 * 60 * 2 // 2 hours
+  }
 }));
 const hbs = exphbs.create({
    helpers: {
@@ -50,6 +58,11 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => {
+  console.log('Session data:', req.session);
+  console.log('connect.sid:', req.cookies['connect.sid']);
+  next();
+});
 
 // Middleware to determine user role (example)
 app.use((req, res, next) => {

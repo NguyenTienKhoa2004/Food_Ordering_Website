@@ -169,7 +169,6 @@ class homeController {
             currentPath: req.originalUrl,
             user: { location: 'Regent Street, A4, A4201, London' }
         });
-
     } catch (error) {
         console.error('Error in menu:', error);
         res.status(500).render('error', {
