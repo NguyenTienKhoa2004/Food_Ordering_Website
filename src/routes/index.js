@@ -7,7 +7,7 @@ const categoryRouter = require('./category');
 const profileRouter = require('./profile');
 const menuRouter = require('./menu');
 const exclusiveDealsRouter = require('./exclusive_deals');
-
+const chatboxRouter = require('./chatbox');
 function route(app){
     
     app.use('/item', itemRouter);
@@ -18,6 +18,7 @@ function route(app){
     app.use('/profile', profileRouter);
     app.use('/menu',menuRouter);
     app.use('/exclusiveDeals', exclusiveDealsRouter);
+    app.use('/chat', chatboxRouter);
     app.use('/', homeRouter);
  
 }

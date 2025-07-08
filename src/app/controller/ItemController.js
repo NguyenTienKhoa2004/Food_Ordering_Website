@@ -10,40 +10,34 @@ const itemModel = require('../models/itemModel');
 
     // [POST] /item/store - Handle adding a new item
     async store(req, res) {
-        try {
-            // Check if the user is logged in and is an admin
-            if (!req.session.user || !req.session.user.isAdmin) {
-                return res.status(403).json({ message: 'Access denied: Admins only' }); // Return 403 if unauthorized
-            }
-
-            // Extract data from the request body
-            const { name, description, image, price } = req.body;
-
-            // Validate input fields
-            if (!name || !description || !image) {
-                return res.status(400).json({ message: 'Name, description, and image are required' }); // Return 400 if validation fails
-            }
-
-            // Create an itemData object to store the item details
-            const itemData = { name, description, image, price };
-
-            // Instantiate itemModel and call the additem method
-            const ItemModel = new itemModel();
-            const result = await ItemModel.additem(itemData);
-            req.io.emit('newItem', result);
-            // Respond with success and return the new item's ID
-            // return res.status(201).json({
-            //     message: 'Item added successfully',
-            //     itemId: result.insertId
-            // });
-            res.redirect('/item/create');
-           
-        } catch (error) {
-            // Log and handle any errors
-            console.error('Error in addItem controller:', error);
-            return res.status(500).json({ message: 'Internal server error' });
+    try {
+        if (!req.session.user || !req.session.user.isAdmin) {
+            return res.status(403).json({ success: false, message: 'Access denied: Admins only' });
         }
+
+        const { name, description, image, price } = req.body;
+
+        if (!name || !description || !image) {
+            return res.status(400).json({ success: false, message: 'Name, description, and image are required' });
+        }
+
+        const itemData = { name, description, image, price };
+
+        const ItemModel = new itemModel();
+        const result = await ItemModel.additem(itemData);
+        req.io.emit('newItem', result);
+
+        return res.status(201).json({
+            success: true,
+            message: 'Item added successfully',
+            redirectUrl: '/item/create'
+        });
+    } catch (error) {
+        console.error('Error in addItem controller:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     }
+}
+
 
     // [GET] /item/:slug - Display details of a specific item
     async show(req, res) {

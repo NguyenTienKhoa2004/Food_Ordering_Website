@@ -20,30 +20,9 @@ class homeController {
             item: item, // Pass the fetched items to the view
             categories: categories, // Pass the fetched categories to the view
             suggestions: suggestions, // Pass the fetched suggestions to the view
-            user: {
-            location: 'Regent Street, A4, A4201, London'
-            },
-            cart: {
-            items: 23,
-            total: '79.89'
-            },
-            exclusiveDeals: exclusiveDeals,
-           
-            restaurants: [
-            { image: '/img/restaurants/mcdonalds.svg', name: "McDonald's London" },
-            { image: '/img/restaurants/papajohns.jpg', name: "Papa Johns" },
-            { image: '/img/restaurants/kfc.png', name: "KFC West London" },
-            { image: '/img/restaurants/texas-chicken.jpg', name: "Texas Chicken" },
-            { image: '/img/restaurants/burger-king.png', name: "Burger King" },
-            { image: '/img/restaurants/shaurma.avif', name: "Shaurma 1" }
-            ],
-            statistics: [
-            { number: '546+', label: 'Registered Riders' },
-            { number: '789,900+', label: 'Orders Delivered' },
-            { number: '690+', label: 'Restaurants Partnered' },
-            { number: '17,457+', label: 'Food Items' }
-            ]
+            exclusiveDeals: exclusiveDeals
         });
+        
     }
 
     // User homepage (/user)

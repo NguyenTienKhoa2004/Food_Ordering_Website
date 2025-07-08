@@ -1,0 +1,82 @@
+<div class="container">
+        <div class="chatbox">
+            <div class="chatbox__support">
+                <div class="chatbox__header">
+                    <div class="chatbox__image--header">
+                        <img src="./img/image.png" alt="image">
+                    </div>
+                    <div class="chatbox__content--header">
+                        <h4 class="chatbox__heading--header">AI Assistance</h4>
+                    </div>
+                </div>
+                <div class="chatbox__messages" id="chatbox__messages"></div>
+                <div class="chatbox__footer">
+                    <img src="./img/icons/emojis.svg" alt="emojis">
+                    <img src="./img/icons/microphone.svg" alt="microphone">
+                    <input type="text" id="user-input" placeholder="Write a message...">
+                    <button class="chatboxBtn" onclick="sendMessage()">Send</button>
+                    <img src="./img/icons/attachment.svg" alt="attachment">
+                </div>
+            </div>
+            <div class="chatbox__button">
+                <button onclick="toggleChatbox()">
+                    <img src="./img/icons/chatbox-icon.svg" alt="chatbox icon" id="toggle-icon">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleChatbox() {
+            const chatbox = document.querySelector('.chatbox__support');
+            const button = document.querySelector('.chatbox__button button');
+            chatbox.classList.toggle('chatbox--active');
+            
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage("user", message);
+            input.value = "";
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message }),
+            })
+                .then(res => res.json())
+                .then(data => {
+                    addMessage("bot", data.reply);
+                })
+                .catch(err => {
+                    addMessage("bot", "Sorry, something went wrong.");
+                    console.error(err);
+                });
+        }
+
+        function addMessage(sender, text) {
+            const chat = document.getElementById("chatbox__messages");
+            const div = document.createElement("div");
+            if (sender === "user") {
+                div.className = "chat-message user-message";
+            } else {
+                div.className = "chat-message bot-message";
+            }
+            div.textContent = text;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("user-input");
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
