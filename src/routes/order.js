@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const orderController = require('../app/controller/OrderController');
+const OrderController = require('../app/controller/OrderController');
+const orderController = new OrderController();
+
+
 
 router.post('/', orderController.placeOrder);
 router.get('/track/:id', orderController.trackOrder);

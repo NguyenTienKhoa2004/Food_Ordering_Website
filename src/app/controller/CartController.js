@@ -15,8 +15,6 @@ class CartController {
             const cartModel = new CartModel();
 
             const cart = await cartModel.showCartbyUserID(userId);
-            console.log(req.path);
-            console.log(req.session.user.username);
  
             res.render('order/cart', {
                 currentPath: req.originalUrl,

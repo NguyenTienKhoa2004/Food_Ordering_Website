@@ -2,17 +2,15 @@ class ChatBoxController {
 
     showChatBox(req, res) {
         try {
-            // Check if user is logged in
             if (!req.session.user) {
-                return res.redirect('/login'); // Redirect to login if not authenticated
+                return res.redirect('/login'); 
             }
 
-            // Check if user is an admin
             if (req.session.user.isAdmin) {
-                return res.redirect('/admin'); // Redirect to admin dashboard if admin
+                return res.redirect('/admin'); 
             }
 
-            // Render chatbox view for authenticated users
+          
             res.render('chatbox/chatbox', {
                 layout: 'user',
                 username: req.session.user.username,

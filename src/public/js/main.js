@@ -451,7 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Close modals when pressing ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeLoginModal();
@@ -459,7 +458,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Store the original FAQ cards row HTML for restoration
     let originalFaqCardsRowHTML = '';
     const faqCardsRow = document.querySelector('.faq-cards-row');
     if (faqCardsRow) {

@@ -43,7 +43,7 @@ const hbs = exphbs.create({
         return paths.some(path => typeof path === 'string' && currentPath.startsWith(path)) ? 'active' : '';
       },
         concat: (...args) => args.slice(0, -1).join(''), // Register the 'concat' helper
-        sum: (a, b) => a + b, // Register the 'sum' helper
+        sum: (a, b) => a + b, // Register the 'sumlayoutsDir' helper
     },
   
   layoutsDir: path.join(__dirname, 'resources/views/layouts'),

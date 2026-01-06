@@ -9,10 +9,8 @@ class OrderController {
                 return res.redirect('/login'); 
             }
             const { cart, street, city, postal, payment } = req.body;
-            console.log('Payment method:', payment);
-            console.log('Placing order with data:', req.body);
 
-             if (!cart || !street || !city || !postal || !payment) {
+            if (!cart || !street || !city || !postal || !payment) {
                 return res.status(400).send('All fields are required.');
             }
             const items = JSON.parse(cart);
@@ -34,57 +32,8 @@ class OrderController {
             res.status(500).send('Internal server error'); 
         }
     }
+
     
-//     async placeOrder(req, res) {
-//     try {
-//         // Check if user is authenticated
-//         if (!req.session.user) {
-//             return res.status(401).json({ error: 'Unauthorized, please log in' });
-//         }
-
-//         // Extract and validate request body
-//         const { cart, street, city, postal, payment } = req.body;
-//         console.log('Payment method:', payment);
-//         console.log('Placing order with data:', req.body);
-
-//         if (!cart || !street || !city || !postal || !payment) {
-//             return res.status(400).json({ error: 'All fields are required' });
-//         }
-
-//         // Parse cart data
-//         let items;
-//         try {
-//             items = JSON.parse(cart);
-//         } catch (error) {
-//             return res.status(400).json({ error: 'Invalid cart format' });
-//         }
-
-//         // Validate items array
-//         if (!Array.isArray(items) || items.length === 0) {
-//             return res.status(400).json({ error: 'Cart cannot be empty' });
-//         }
-
-//         // Create address object
-//         const address = { street, city, postal };
-
-//         // Create order using OrderModel
-//         const OrderModel = new orderModel();
-//         const { orderId, total } = await OrderModel.createOrder(req.session.user.id, items, address, payment);
-
-//         // Return JSON response
-//         res.status(200).json({
-//             message: 'Order placed successfully',
-//             orderId,
-//             total,
-//             address,
-//             payment,
-//             items
-//         });
-//     } catch (error) {
-//         console.error('Error placing order:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// }
     async cancelOrder(req, res) {
         try {
             
@@ -168,4 +117,6 @@ class OrderController {
 }
 
 
-module.exports = new OrderController();
+//module.exports = new OrderController();
+
+module.exports = OrderController;
