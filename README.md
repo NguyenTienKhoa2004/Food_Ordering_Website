@@ -1,104 +1,74 @@
-🍽️ Food Ordering Website – Setup Guide
+# 🍔 Food Delivery High-Performance API
 
-This guide will help you set up the Foodapp project locally, including cloning the repository, installing dependencies, setting up the MySQL database, and running the application.
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
 
-📋 Prerequisites
+> **A robust, scalable backend system designed for strict data integrity under high concurrency.**
 
-Before you begin, ensure the following are installed on your system:
+This project is a RESTful API built with **Node.js** and **Express**, following the **MVC architecture** and **SOLID principles**. It specifically addresses complex e-commerce challenges such as race conditions (overselling), deadlocks, and high-traffic performance optimization.
 
-Git → Install Git
+---
 
-MySQL → Install MySQL
+## 🛠 Tech Stack
 
-Node.js (or other runtime such as Python or PHP, based on your project)
+- **Runtime:** Node.js
+- **Framework:** ExpressJS
+- **Database:** MySQL (Relational)
+- **Caching:** Redis
+- **Testing:** Jest
+- **Containerization:** Docker & Docker Compose
 
-⚠️ Ensure MySQL is accessible via the command line. You can verify this by running:
+---
 
-bash
-mysql --version
+## 🚀 Features
 
-🚀 Project Setup Instructions
+### 👤 User Capabilities
+- **Authentication:** Secure Registration & Login (JWT).
+- **Menu:** Browse food items with cached responses.
+- **Ordering:**
+  - Add items to cart.
+  - Checkout/Place order.
+  - **Track Order:** Real-time status updates (Pending, Shipping, etc.).
+  - **Cancel Order:** Ability to cancel active orders.
 
-1. Clone the Repository
+### 🛡 Admin Capabilities
+- **Product Management:** Add/Remove items, update prices.
+- **User Management:** Manage user accounts and ban violators.
 
-bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+---
 
-Replace https://github.com/your-username/your-repo.git with your actual repository URL.
+## 💎 Engineering Highlights (Performance & Security)
 
-2. Install Project Dependencies
+This section details the advanced patterns applied to ensure production readiness.
 
-For Node.js projects:
+### 1. High Concurrency & Data Integrity
+Addressed "Race Conditions" where multiple users attempt to purchase the last item simultaneously.
 
-bash
-npm install
+- **Pessimistic Locking:** Implemented Database Transactions with `SELECT ... FOR UPDATE`. This locks the product row during the transaction, strictly preventing **Overselling**.
+- **Deadlock Prevention:** Eliminated system deadlocks during complex multi-item orders by enforcing a **Sorting Locking Order** strategy. Product IDs are always locked in ascending order to prevent circular dependency.
 
-If you're using a different runtime (e.g., Python or PHP), follow the respective method for dependency installation.
+### 2. Performance Optimization & Scalability
+- **Redis Cache-Aside Pattern:** Applied for the Menu/Product listing.
+  - *Flow:* Check Cache -> Hit? Return -> Miss? Query DB -> Set Cache -> Return.
+  - *Benefit:* Drastically reduced MySQL CPU usage and improved API latency.
+- **Docker Containerization:** The entire stack is containerized for consistent deployment across environments.
 
-3. Configure MySQL
+### 3. Reliability & Security
+- **Duplicate Submission Prevention:** Handled network latency issues using **Debouncing logic** and the **PRG Pattern** (Post/Redirect/Get) to prevent duplicate orders.
+- **Security:**
+  - **Rate Limiting:** Protects against brute-force/DDoS.
+  - **SQL Injection Prevention:** Uses parameterized queries/ORM.
+  - **RBAC:** Middleware-based Role-Based Access Control.
+- **Testing:** Logic verified using **Jest**.
 
-✅ Ensure MySQL is Accessible
+---
 
-Windows: Add MySQL to your system PATH.
+## 📊 System Visualizations
 
-Example: C:\Program Files\MySQL\MySQL Server 8.0\bin
+### Redis Cache-Aside Strategy
+*How the system handles high-traffic menu viewing:*
 
-Linux/Mac: Add to your shell configuration file:
-
-bash
-export PATH=$PATH:/usr/local/mysql/bin
-
-Restart your terminal after modifying the PATH.
-
-4. Import the MySQL Database
-
-📅 Download the Database Dump
-
-Get database_dump.sql from: [insert secure download link]
-
-🛠️ Create and Import Database
-
-Log in to MySQL:
-
-bash
-mysql -u your-username -p
-
-Create the database:
-
-sql
-CREATE DATABASE foodapp;
-EXIT;
-
-Import the dump file:
-
-bash
-mysql -u your-username -p foodapp < path/to/database_dump.sql
-
-Replace your-username with your actual MySQL username (e.g., root).Replace path/to/database_dump.sql with the actual file path (e.g., ~/Downloads/database_dump.sql or C:\Users\YourName\Downloads\database_dump.sql).
-
-Verify import:
-
-bash
-mysql -u your-username -p
-USE foodapp;
-SHOW TABLES;
-
-You should see a list of tables from the foodapp database.
-
-5. Run the Application
-
-For Node.js projects:
-
-bash
-npm start
-
-Once the server is running, open your browser and go to:
-
-http://localhost:3000
-
-or
-
-http://localhost:8000
-
-(depending on how your project is configured)
