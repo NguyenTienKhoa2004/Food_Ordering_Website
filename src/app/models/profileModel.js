@@ -14,7 +14,7 @@ class profileModel {
                 [userId]
             );
             
-            await connection.end(); // Close the database connection
+            connection.release(); // Close the database connection
             
             // Return the user's profile data if found, otherwise return null
             return rows.length > 0 ? rows[0] : null;

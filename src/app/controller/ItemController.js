@@ -1,114 +1,111 @@
-// Importing the itemModel to interact with the item database
 const itemModel = require('../models/itemModel');
+const redisClient = require('../../config/redis');
 
-    class ItemController {
+class ItemController {
 
-    // [GET] /item/create - Render the item creation page
     create(req, res, next) {
-        res.render('item/create', { layout: 'admin' }); // Render the 'create' view with the admin layout
+        res.render('item/create', { layout: 'admin' });
     }
 
-    // [POST] /item/store - Handle adding a new item
     async store(req, res) {
-    try {
-        if (!req.session.user || !req.session.user.isAdmin) {
-            return res.status(403).json({ success: false, message: 'Access denied: Admins only' });
-        }
-
-        const { name, description, image, price } = req.body;
-
-        if (!name || !description || !image) {
-            return res.status(400).json({ success: false, message: 'Name, description, and image are required' });
-        }
-
-        const itemData = { name, description, image, price };
-
-        const ItemModel = new itemModel();
-        const result = await ItemModel.additem(itemData);
-        req.io.emit('newItem', result);
-
-        return res.status(201).json({
-            success: true,
-            message: 'Item added successfully',
-            redirectUrl: '/item/create'
-        });
-    } catch (error) {
-        console.error('Error in addItem controller:', error);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
-    }
-}
-
-
-    // [GET] /item/:slug - Display details of a specific item
-    async show(req, res) {
         try {
-            const slug = req.params.slug; // Extract the slug from the request parameters
-
-            const ItemModel = new itemModel();
-            const item = await ItemModel.getItemBySlug(slug); // Fetch the item by its slug
-            if (!item) {
-                return res.status(404).send('Item not found'); // Return 404 if the item doesn't exist
+            if (!req.session.user || !req.session.user.isAdmin) {
+                return res.status(403).json({ success: false, message: 'Access denied: Admins only' });
             }
 
-            // Render the item details page with the fetched item data
+            const { name, description, image, price } = req.body;
+
+            if (!name || !description || !image) {
+                return res.status(400).json({ success: false, message: 'Name, description, and image are required' });
+            }
+
+            const itemData = { name, description, image, price };
+
+            const ItemModel = new itemModel();
+            const result = await ItemModel.additem(itemData);
+            req.io.emit('newItem', result);
+
+            try {
+                if (redisClient.isOpen) {
+                    await redisClient.del('menu_items');
+                }
+            } catch (err) {
+                console.error('Redis delete error:', err);
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'Item added successfully',
+                redirectUrl: '/item/create'
+            });
+        } catch (error) {
+            console.error('Error in addItem controller:', error);
+            return res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    }
+
+
+    async show(req, res) {
+        try {
+            const slug = req.params.slug;
+
+            const ItemModel = new itemModel();
+            const item = await ItemModel.getItemBySlug(slug);
+            if (!item) {
+                return res.status(404).send('Item not found');
+            }
+
             res.render('item/item-details', {
-                layout: 'admin', // Use the admin layout
+                layout: 'admin',
                 item
             });
         } catch (error) {
-            // Log and handle any errors
+
             console.error('Error fetching item:', error);
             res.status(500).send('Internal server error');
         }
     }
 
-    // [GET] /item/:slug/edit - Render the edit page for a specific item
     edit(req, res) {
-        const slug = req.params.slug; // Extract the slug from the request parameters
-        console.log("Slug:", slug); // Log the slug for debugging
+        const slug = req.params.slug;
+        console.log("Slug:", slug);
 
         const ItemModel = new itemModel();
         ItemModel.getItemBySlug(slug)
             .then(item => {
                 if (!item) {
-                    return res.status(404).send('Item not found'); // Return 404 if the item doesn't exist
+                    return res.status(404).send('Item not found');
                 }
 
-                // Render the edit-item view with the fetched item data
                 res.render('item/edit-item', {
-                    layout: 'admin', // Use the admin layout
+                    layout: 'admin',
                     item
                 });
             })
             .catch(error => {
-                // Log and handle any errors
                 console.error('Error fetching item for edit:', error);
                 res.status(500).send('Internal server error');
             });
     }
 
-    // [PUT] /item/:id - Handle updating an existing item
     async update(req, res) {
         try {
-            // Check if the user is logged in and is an admin
             if (!req.session.user || !req.session.user.isAdmin) {
-                return res.status(403).send('Access denied: Admins only'); // Return 403 if unauthorized
+                return res.status(403).send('Access denied: Admins only');
             }
 
-            const id = req.params.id; // Extract the item ID from the request parameters
-            const { name, description, image, price } = req.body; // Extract data from the request body
+            const id = req.params.id;
+            const { name, description, image, price } = req.body;
 
-            // Validate input fields
             if (!name || price == null) {
-                return res.status(400).send('Name and price are required'); // Return 400 if validation fails
+                return res.status(400).send('Name and price are required');
             }
 
-            const parsedPrice = parseFloat(price); // Parse the price as a float
+            const parsedPrice = parseFloat(price);
             if (isNaN(parsedPrice) || parsedPrice <= 0) {
-                return res.status(400).send('Price must be a positive number'); // Return 400 if the price is invalid
+                return res.status(400).send('Price must be a positive number');
             }
 
-            // Create an itemData object with optional fields set to null if not provided
             const itemData = {
                 name,
                 description: description || null,
@@ -117,106 +114,116 @@ const itemModel = require('../models/itemModel');
             };
 
             const ItemModel = new itemModel();
-            const result = await ItemModel.editItem(id, itemData); // Update the item in the database
+            const result = await ItemModel.editItem(id, itemData);
             if (result.affectedRows === 0) {
-                return res.status(404).send('Item not found'); // Return 404 if the item doesn't exist
+                return res.status(404).send('Item not found');
             }
 
-            // Redirect to the stored items page with a success message
+            try {
+                if (redisClient.isOpen) {
+                    await redisClient.del('menu_items');
+                }
+            } catch (err) {
+                console.error('Redis delete error:', err);
+            }
+
             res.redirect('/me/stored/item?success=Item+updated');
         } catch (error) {
-            // Log and handle any errors
             console.error('Error updating item:', error);
             res.status(500).send('Internal server error');
         }
     }
 
-    // [GET] /item/:slug/order - Render the order form for a specific item
-    async showOrderForm(req, res) {
-        try {
-            // const slug = req.params.slug; // Extract the slug from the request parameters
 
-            // const ItemModel = new itemModel();
-            // const item = await ItemModel.getItemBySlug(slug); // Fetch the item by its slug
-            // if (!item) {
-            //     return res.status(404).send('Item not found'); // Return 404 if the item doesn't exist
-            // }
-            console.log('currentPath:', req.path); // Log the current path for debugging
-            // Render the order form with the fetched item data
-            res.render('order/place-order', {
-                layout: 'user', // Use the public layout
-                // item,
-                // currentPath: req.path,
-                currentPath: req.originalUrl, // Pass the original URL for potential use in the view
-                username: req.session.user.username // Pass the current path for potential use in the view
-            });
-        } catch (error) {
-            // Log and handle any errors
-            console.error('Error showing order form:', error);
+    async itemDetail(req, res) {
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+        if (req.session.user.isAdmin) {
+            return res.redirect('/admin');
+        }
+
+        const itemSlug = req.params.slug;
+        const cacheKey = `item:${itemSlug}`;
+        let item;
+
+        try {
+            if (redisClient.isOpen) {
+                const cachedData = await redisClient.get(cacheKey);
+                if (cachedData) {
+                    console.log(`[REDIS] Cache HIT → ${cacheKey}`);
+                    return res.render('item/item-details', {
+                        layout: 'user',
+                        bodyClass: 'item-details-bg',
+                        username: req.session.user.username,
+                        currentPath: req.originalUrl,
+                        item: JSON.parse(cachedData)
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('Redis get error:', err);
+        }
+
+        console.log(`[REDIS] Cache MISS → ${cacheKey}`);
+        const ItemModel = new itemModel();
+        item = await ItemModel.getItemBySlug(itemSlug);
+
+        if (!item) {
+            return res.status(404).send('Item not found');
+        }
+
+        try {
+            if (redisClient.isOpen) {
+                await redisClient.setEx(cacheKey, 3600, JSON.stringify(item));
+                console.log(`[REDIS] Cache SET → ${cacheKey}`);
+            }
+        } catch (err) {
+            console.error('Redis set error:', err);
+        }
+
+        res.render('item/item-details', {
+            layout: 'user',
+            bodyClass: 'item-details-bg',
+            username: req.session.user.username,
+            currentPath: req.originalUrl,
+            item: item
+        });
+    }
+
+    async deleteItem(req, res, next) {
+        try {
+            if (!req.session.user) {
+                return res.redirect('/login');
+            }
+
+            if (!req.session.user.isAdmin) {
+                return res.status(403).send('Access denied: Admins only');
+            }
+
+            const itemId = req.params.id;
+
+            const ItemModel = new itemModel();
+
+            await ItemModel.deleteItem(itemId);
+
+            try {
+                if (redisClient.isOpen) {
+                    await redisClient.del('menu_items');
+                }
+            } catch (err) {
+                console.error('Redis delete error:', err);
+            }
+
+            res.redirect('/me/stored/item');
+
+        } catch (err) {
+            console.error('Error in deleteItem:', err);
             res.status(500).send('Internal server error');
         }
     }
 
-    async itemDetail(req, res){
-        // Check if the user is logged in
-        if (!req.session.user) {
-            return res.redirect('/login'); // Redirect to login if not logged in
-        }
-
-        // Prevent admins from accessing the user homepage
-        if (req.session.user.isAdmin) {
-            return res.redirect('/admin'); // Redirect admins to the admin dashboard
-        }
-
-        const itemSlug = req.params.slug; // Get the item ID from the request parameters
-        const ItemModel = new itemModel(); // Instantiate the item model
-        // Fetch the item details from the database
-        const item = await ItemModel.getItemBySlug(itemSlug); // Fetch the item by its ID
-        if (!item) {
-            return res.status(404).send('Item not found'); // Return 404 if the item doesn't exist
-        }
-
-        // Render the item detail view with the user layout
-        res.render('item/item-details', {
-            layout: 'user', // Use the user layout
-            bodyClass: 'item-details-bg', // Add a class for styling the body
-            username: req.session.user.username, // Pass the logged-in user's username
-            currentPath: req.originalUrl, // Pass the current path for active link highlighting
-            item: item // Pass the fetched item details to the view
-        });
-    }
-
-    // deleteItem(req, res, next) {
-    //     try {
-    //         // Check if the user is logged in
-    //         if (!req.session.user) {
-    //             return res.redirect('/login'); // Redirect to login if not logged in
-    //         }
-
-    //         // Extract the item ID from the request parameters
-    //         const itemId = req.params.id;
-            
-    //         // Instantiate the CartModel to interact with the cart data
-    //         const ItemModel = new itemModel();
-    //         console.log('Deleting item with ID:', itemId); // Log the item ID for debugging
-    //         // Delete the item from the cart using the CartModel method
-    //         ItemModel.deleteItem(itemId)
-    //             .then(() => {
-    //                 // Redirect back to the cart page after deletion
-    //                 res.redirect('/me');
-    //             })
-    //             .catch(err => {
-    //                 console.error('Error deleting item:', err);
-    //                 res.status(500).send('Internal server error'); // Return a 500 error response
-    //             });
-    //     } catch (err) {
-    //         console.error('Error in deleteItem:', err);
-    //         res.status(500).send('Internal server error'); // Return a 500 error response
-    //     }
-    // }
-
 }
 
-// Exporting an instance of the ItemController class
 module.exports = new ItemController();
-

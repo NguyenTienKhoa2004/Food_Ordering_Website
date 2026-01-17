@@ -11,7 +11,7 @@ class UserModel {
             'SELECT * FROM users WHERE username = ?',
             [username]
         );
-        await connection.end();
+        connection.release();
         const user = rows[0];
         if (user && await bcrypt.compare(password, user.password)) {
             return user;
@@ -29,7 +29,7 @@ class UserModel {
                 const sql = 'SELECT id, username, isAdmin FROM users';
                 const [rows] = await connection.execute(sql); // Execute the query
 
-                await connection.end(); // Close the database connection
+                connection.release(); // Close the database connection
 
                 resolve(rows); // Resolve the promise with the fetched rows
             } catch (error) {
@@ -45,29 +45,29 @@ class UserModel {
         const hashedPassword = await bcrypt.hash(password, 10); // Hash password
         const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
         await connection.execute(sql, [username, email, hashedPassword]);
-        await connection.end();
+        connection.release();
     }
     static async findById(id) {
         const connection = await getConnection();
         const [rows] = await connection.execute('SELECT * FROM users WHERE id = ?', [id]);
-        await connection.end();
+        connection.release();
         return rows[0];
     }
     static async updateAdminStatus(id, isAdmin) {
         const connection = await getConnection();
         await connection.execute('UPDATE users SET isAdmin = ? WHERE id = ?', [isAdmin ? 1 : 0, id]);
-        await connection.end();
+        connection.release();
     }
     static async updateUsername(id, username) {
         const connection = await getConnection();
         await connection.execute('UPDATE users SET username = ? WHERE id = ?', [username, id]);
-        await connection.end();
+        connection.release();
     }
 
     static async checkPassword(id, password) {
         const connection = await getConnection();
         const [rows] = await connection.execute('SELECT password FROM users WHERE id = ?', [id]);
-        await connection.end();
+        connection.release();
         if (!rows[0]) return false;
         return await bcrypt.compare(password, rows[0].password);
     }
@@ -76,7 +76,7 @@ class UserModel {
         const connection = await getConnection();
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await connection.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
-        await connection.end();
+        connection.release();
     }
 }
 

@@ -31,12 +31,12 @@ class orderModel {
             }
 
             await connection.commit();
-            //await connection.end();
+            //connection.release();
             await connection.release();
             return { orderId, total };
         } catch (error) {
             await connection.rollback();
-            //await connection.end();
+            //connection.release();
             await connection.release();
             console.error('Error creating order:', error);
             throw error;
@@ -47,7 +47,7 @@ class orderModel {
         try {
             const connection = await getConnection();
             const [rows] = await connection.execute('SELECT * FROM orders WHERE user_id = ?', [userId]);
-            await connection.end();
+            connection.release();
             return rows;
         } catch (error) {
             console.error('Error fetching cart:', error);
@@ -61,7 +61,7 @@ class orderModel {
             try {
                 const connection = await getConnection(); 
                 const [rows] = await connection.execute('SELECT o.*, u.username FROM orders o JOIN users u on o.user_id = u.id WHERE o.id = ?', [Id]);
-                await connection.end(); 
+                connection.release(); 
                 resolve(rows); 
             } catch (error) {
                 console.error('Error fetching cart:', error); 
@@ -76,7 +76,7 @@ class orderModel {
             try {
                 const connection = await getConnection(); 
                 const [rows] = await connection.execute('SELECT * FROM orders'); 
-                await connection.end(); 
+                connection.release(); 
                 resolve(rows); 
             } catch (error) {
                 console.error('Error fetching all orders:', error); 
@@ -96,7 +96,7 @@ class orderModel {
                     ORDER BY o.created_at DESC
                 `; 
                 const [rows] = await connection.execute(sql); 
-                await connection.end(); 
+                connection.release(); 
                 resolve(rows); 
             } catch (error) {
                 console.error('Error fetching orders:', error); 
@@ -111,7 +111,7 @@ class orderModel {
                 const connection = await getConnection();
                 const sql = 'UPDATE orders SET status = ? WHERE id = ?';
                 const [result] = await connection.execute(sql, [status, orderId]);
-                await connection.end();
+                connection.release();
                 resolve(result);
             } catch (error) {
                 console.error('Error updating order status:', error);
@@ -125,7 +125,7 @@ class orderModel {
                 const connection = await getConnection(); 
                 const sql = 'UPDATE orders SET status = ? WHERE id = ?'; 
                 const [result] = await connection.execute(sql, ['cancelled', orderId]); 
-                await connection.end(); 
+                connection.release(); 
                 resolve(result); 
             } catch (error) {
                 console.error('Error cancelling order:', error); 
@@ -144,12 +144,12 @@ class orderModel {
                 const [result] = await connection.execute('DELETE FROM orders WHERE id = ?', [orderId]);
 
                 await connection.commit(); 
-                await connection.end(); 
+                connection.release(); 
                 resolve(result); 
             } catch (error) {
                 if (connection) {
                     await connection.rollback();
-                    await connection.end();
+                    connection.release();
                 }
                 console.error('Error deleting order:', error);
                 reject(error);
@@ -162,7 +162,7 @@ class orderModel {
                 const connection = await getConnection(); 
                 const sql = 'UPDATE orders SET status = ? WHERE id = ?'; 
                 const [result] = await connection.execute(sql, ['done', orderId]); 
-                await connection.end(); 
+                connection.release(); 
                 resolve(result); 
             } catch (error) {
                 console.error('Error marking order as done:', error); 
